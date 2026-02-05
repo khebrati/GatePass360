@@ -44,3 +44,14 @@ CREATE TABLE IF NOT EXISTS "TrafficLog" (
     recorded_by INT REFERENCES "User"(id)
 );
 
+-- Create TokenBlacklist table for logout functionality
+CREATE TABLE IF NOT EXISTS "TokenBlacklist" (
+    id SERIAL PRIMARY KEY,
+    token TEXT NOT NULL,
+    user_id INT REFERENCES "User"(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create index on token for faster lookups
+CREATE INDEX IF NOT EXISTS idx_token_blacklist_token ON "TokenBlacklist"(token);
+
