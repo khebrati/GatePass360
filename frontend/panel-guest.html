@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مهمان | GatePass360</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .panel-container {
+            max-width: 1000px;
+            margin: 80px auto 30px;
+            padding: 0 20px;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-icon {
+            width: 50px;
+            height: 50px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .request-form {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .form-control {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        
+        .requests-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .requests-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: right;
+            border-bottom: 2px solid #eee;
+            color: #2c3e50;
+        }
+        
+        .requests-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-approved { background: #d4edda; color: #155724; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <!-- نوار بالا -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-door-closed"></i>
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    GatePass<span class="highlight">360</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">خانه</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- پنل مهمان -->
+    <div class="panel-container">
+        <!-- هدر پنل -->
+        <div class="panel-header">
+            <div class="user-info">
+                <div class="user-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div>
+                    <h3 id="userName">مهمان</h3>
+                    <p style="color: #666; font-size: 0.9rem;">👤 نقش: مهمان</p>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> خروج
+            </button>
+        </div>
+        
+        <!-- کارت ثبت درخواست جدید -->
+        <div class="card">
+            <h2 class="card-title">ثبت درخواست ورود جدید</h2>
+            <form class="request-form" id="newRequestForm">
+                <div class="form-group">
+                    <label>ایمیل میزبان</label>
+                    <input type="email" class="form-control" placeholder="host@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>هدف مراجعه</label>
+                    <select class="form-control" required>
+                        <option value="">انتخاب کنید</option>
+                        <option value="meeting">جلسه کاری</option>
+                        <option value="interview">مصاحبه</option>
+                        <option value="delivery">تحویل مدارک</option>
+                        <option value="visit">بازدید</option>
+                        <option value="other">سایر</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>توضیحات</label>
+                    <textarea class="form-control" rows="3" placeholder="توضیحات تکمیلی..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>تاریخ مراجعه</label>
+                    <input type="date" class="form-control" required>
+                </div>
+                
+                <button type="submit" class="btn-primary" style="align-self: flex-start;">
+                    <i class="fas fa-paper-plane"></i> ارسال درخواست
+                </button>
+            </form>
+        </div>
+        
+        <!-- کارت درخواست‌های من -->
+        <div class="card">
+            <h2 class="card-title">درخواست‌های من</h2>
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th>تاریخ</th>
+                        <th>میزبان</th>
+                        <th>هدف</th>
+                        <th>وضعیت</th>
+                        <th>توضیحات</th>
+                    </tr>
+                </thead>
+                <tbody id="myRequests">
+                    <!-- با JS پر می‌شود -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // بررسی لاگین بودن
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || user.role !== 'guest') {
+            window.location.href = 'login.html';
+        }
+        
+        // نمایش نام کاربر
+        document.getElementById('userName').textContent = user.name;
+        
+        // فرم درخواست جدید
+        document.getElementById('newRequestForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('درخواست شما ثبت شد و در انتظار تأیید میزبان است.');
+            this.reset();
+            loadRequests();
+        });
+        
+        // بارگذاری درخواست‌ها
+        function loadRequests() {
+            const requests = [
+                { date: '۱۴۰۲/۱۲/۱۰', host: 'احمد رضایی', purpose: 'جلسه کاری', status: 'approved', notes: 'تأیید شده' },
+                { date: '۱۴۰۲/۱۲/۱۲', host: 'مریم کریمی', purpose: 'تحویل مدارک', status: 'pending', notes: 'در انتظار' },
+                { date: '۱۴۰۲/۱۲/۰۸', host: 'محمد حسینی', purpose: 'مصاحبه', status: 'rejected', notes: 'رد شده' }
+            ];
+            
+            const tbody = document.getElementById('myRequests');
+            tbody.innerHTML = requests.map(req => `
+                <tr>
+                    <td>${req.date}</td>
+                    <td>${req.host}</td>
+                    <td>${req.purpose}</td>
+                    <td><span class="status status-${req.status}">${getStatusText(req.status)}</span></td>
+                    <td>${req.notes}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function getStatusText(status) {
+            const map = { pending: 'در انتظار', approved: 'تأیید شده', rejected: 'رد شده' };
+            return map[status] || status;
+        }
+        
+        // خروج
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        });
+        
+        // اجرای اولیه
+        loadRequests();
+    </script>
+</body>
+</html>

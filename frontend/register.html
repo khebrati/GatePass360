@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت‌نام | GatePass360</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* استایل‌های خاص ثبت‌نام */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            padding: 20px;
+            margin-top: 60px;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .auth-header i {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        .auth-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .form-hint {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .form-footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #666;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: #3498db;
+        }
+        
+        /* نقش‌ها */
+        .role-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .role-option {
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .role-option:hover {
+            border-color: #3498db;
+        }
+        
+        .role-option.selected {
+            border-color: #3498db;
+            background: #f0f8ff;
+        }
+        
+        .role-option i {
+            font-size: 1.5rem;
+            color: #3498db;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .error-message {
+            background: #ffeaea;
+            color: #d63031;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- نوار بالا -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-door-closed"></i>
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    GatePass<span class="highlight">360</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="login.html" class="btn-outline">ورود</a>
+                <a href="index.html" class="btn-primary">خانه</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- صفحه ثبت‌نام -->
+    <div class="auth-page">
+        <div class="auth-card">
+            <!-- هدر -->
+            <div class="auth-header">
+                <i class="fas fa-user-plus"></i>
+                <h2>ثبت‌نام در سیستم</h2>
+                <p>حساب کاربری جدید ایجاد کنید</p>
+            </div>
+            
+            <!-- پیام خطا -->
+            <div class="error-message" id="errorMessage"></div>
+            
+            <!-- فرم -->
+            <form id="registerForm">
+                <!-- نام کامل -->
+                <div class="form-group">
+                    <label for="fullName">نام و نام خانوادگی</label>
+                    <input type="text" id="fullName" class="form-control" placeholder="علی محمدی" required>
+                    <div class="form-hint">حداقل ۳ کاراکتر</div>
+                </div>
+                
+                <!-- ایمیل -->
+                <div class="form-group">
+                    <label for="email">ایمیل</label>
+                    <input type="email" id="email" class="form-control" placeholder="example@domain.com" required>
+                    <div class="form-hint">از ایمیل معتبر استفاده کنید</div>
+                </div>
+                
+                <!-- رمز عبور -->
+                <div class="form-group">
+                    <label for="password">رمز عبور</label>
+                    <input type="password" id="password" class="form-control" placeholder="حداقل ۶ کاراکتر" required minlength="6">
+                    <div class="form-hint">رمز قوی انتخاب کنید</div>
+                </div>
+                
+                <!-- تکرار رمز -->
+                <div class="form-group">
+                    <label for="confirmPassword">تکرار رمز عبور</label>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="رمز را مجدداً وارد کنید" required>
+                </div>
+                
+                <!-- انتخاب نقش -->
+                <div class="form-group">
+                    <label>نقش شما</label>
+                    <div class="role-options">
+                        <div class="role-option" data-role="guest">
+                            <i class="fas fa-user"></i>
+                            مهمان
+                        </div>
+                        <div class="role-option" data-role="host">
+                            <i class="fas fa-briefcase"></i>
+                            میزبان
+                        </div>
+                        <div class="role-option" data-role="security">
+                            <i class="fas fa-shield-alt"></i>
+                            حراست
+                        </div>
+                        <div class="role-option" data-role="admin">
+                            <i class="fas fa-cog"></i>
+                            مدیر
+                        </div>
+                    </div>
+                    <input type="hidden" id="role" required>
+                    <div class="form-hint">این انتخاب بعداً قابل تغییر نیست</div>
+                </div>
+                
+                <!-- قوانین -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">با قوانین سیستم موافقم</label>
+                </div>
+                
+                <!-- دکمه ثبت‌نام -->
+                <button type="submit" class="btn-primary" style="width: 100%; padding: 12px;">
+                    <i class="fas fa-user-plus"></i> ایجاد حساب
+                </button>
+                
+                <!-- فوتر فرم -->
+                <div class="form-footer">
+                    <p>قبلاً حساب دارید؟ <a href="login.html">وارد شوید</a></p>
+                    <a href="index.html" class="back-link">
+                        <i class="fas fa-arrow-right"></i> بازگشت به خانه
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // مدیریت انتخاب نقش
+        const roleOptions = document.querySelectorAll('.role-option');
+        const roleInput = document.getElementById('role');
+        
+        roleOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // حذف انتخاب قبلی
+                roleOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // انتخاب جدید
+                this.classList.add('selected');
+                roleInput.value = this.dataset.role;
+            });
+        });
+        
+        // اعتبارسنجی فرم
+        const form = document.getElementById('registerForm');
+        const errorDiv = document.getElementById('errorMessage');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // جمع‌آوری داده‌ها
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const role = roleInput.value;
+            const terms = document.getElementById('terms').checked;
+            
+            // پاک کردن خطاهای قبلی
+            errorDiv.style.display = 'none';
+            
+            // اعتبارسنجی
+            if (fullName.length < 3) {
+                showError('نام باید حداقل ۳ کاراکتر باشد');
+                return;
+            }
+            
+            if (!email.includes('@') || !email.includes('.')) {
+                showError('ایمیل معتبر وارد کنید');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('رمز عبور باید حداقل ۶ کاراکتر باشد');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showError('رمز عبور و تکرار آن مطابقت ندارند');
+                return;
+            }
+            
+            if (!role) {
+                showError('لطفاً نقش خود را انتخاب کنید');
+                return;
+            }
+            
+            if (!terms) {
+                showError('لطفاً با قوانین موافقت کنید');
+                return;
+            }
+            
+            // اگر همه چیز درست بود
+            alert('✅ ثبت‌نام موفق! (در نسخه واقعی به سرور ارسال می‌شود)');
+            
+            // شبیه‌سازی ارسال موفق
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ثبت...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                // ذخیره در localStorage (موقت)
+                localStorage.setItem('user', JSON.stringify({
+                    fullName,
+                    email,
+                    role,
+                    loggedIn: true
+                }));
+                
+                // هدایت به داشبورد
+                window.location.href = 'panel.html';
+            }, 1500);
+        });
+        
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        // اعتبارسنجی بلادرنگ رمز
+        const passwordInput = document.getElementById('password');
+        const confirmInput = document.getElementById('confirmPassword');
+        
+        confirmInput.addEventListener('input', function() {
+            if (passwordInput.value !== this.value && this.value !== '') {
+                this.style.borderColor = '#e74c3c';
+            } else {
+                this.style.borderColor = '#ddd';
+            }
+        });
+    </script>
+</body>
+</html>

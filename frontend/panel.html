@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل کاربری | GatePass360</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* استایل‌های پنل */
+        .panel-page {
+            min-height: 100vh;
+            background: #f8f9fa;
+            padding-top: 80px;
+        }
+        
+        .panel-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* سایدبار */
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+        }
+        
+        .user-info {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #34495e;
+            margin-bottom: 20px;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 2rem;
+        }
+        
+        .user-name {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-role {
+            color: #bdc3c7;
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.1);
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .sidebar-menu {
+            padding: 0 15px;
+        }
+        
+        .menu-item {
+            display: block;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            transition: background 0.3s;
+        }
+        
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .menu-item.active {
+            background: #3498db;
+        }
+        
+        .menu-item i {
+            width: 25px;
+            margin-left: 10px;
+        }
+        
+        /* محتوا */
+        .content {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            color: #2c3e50;
+            font-size: 1.8rem;
+        }
+        
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+        
+        /* کارت‌ها */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* جدول */
+        .data-table {
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .table-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .table-content {
+            padding: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: right;
+            font-weight: 600;
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            color: #666;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .status.pending { background: #fff3cd; color: #856404; }
+        .status.approved { background: #d4edda; color: #155724; }
+        .status.rejected { background: #f8d7da; color: #721c24; }
+        
+        /* بخش‌های مخفی */
+        .panel-section {
+            display: none;
+        }
+        
+        .panel-section.active {
+            display: block;
+        }
+        
+        /* رسپانسیو */
+        @media (max-width: 768px) {
+            .panel-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+            
+            .content {
+                order: 1;
+                padding: 20px;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- نوار بالا -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-door-closed"></i>
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    GatePass<span class="highlight">360</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <span id="welcomeUser" style="color: #2c3e50;"></span>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> خروج
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- پنل کاربری -->
+    <div class="panel-page">
+        <div class="panel-container">
+            <!-- سایدبار -->
+            <div class="sidebar">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-name" id="userName"></div>
+                    <div class="user-role" id="userRole"></div>
+                </div>
+                
+                <div class="sidebar-menu">
+                    <a href="#" class="menu-item active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> داشبورد
+                    </a>
+                    <a href="#" class="menu-item" data-section="requests" id="requestsMenu">
+                        <i class="fas fa-clipboard-list"></i> درخواست‌ها
+                    </a>
+                    <a href="#" class="menu-item" data-section="visitors" id="visitorsMenu">
+                        <i class="fas fa-users"></i> مهمانان
+                    </a>
+                    <a href="#" class="menu-item" data-section="profile">
+                        <i class="fas fa-user-cog"></i> پروفایل
+                    </a>
+                    <a href="#" class="menu-item" data-section="settings" id="settingsMenu">
+                        <i class="fas fa-cog"></i> تنظیمات
+                    </a>
+                </div>
+            </div>
+            
+            <!-- محتوا -->
+            <div class="content">
+                <!-- هدر -->
+                <div class="content-header">
+                    <h1 class="page-title" id="pageTitle">داشبورد</h1>
+                    <div id="actionButtons"></div>
+                </div>
+                
+                <!-- بخش داشبورد -->
+                <div class="panel-section active" id="dashboardSection">
+                    <!-- آمار -->
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <span class="stat-number" id="totalRequests">۰</span>
+                            <span class="stat-label">درخواست‌ها</span>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <span class="stat-number" id="approvedRequests">۰</span>
+                            <span class="stat-label">تأیید شده</span>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-clock"></i>
+                            </div>
+                            <span class="stat-number" id="pendingRequests">۰</span>
+                            <span class="stat-label">در انتظار</span>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-door-open"></i>
+                            </div>
+                            <span class="stat-number" id="todayVisitors">۰</span>
+                            <span class="stat-label">مهمان امروز</span>
+                        </div>
+                    </div>
+                    
+                    <!-- آخرین درخواست‌ها -->
+                    <div class="data-table">
+                        <div class="table-header">آخرین درخواست‌ها</div>
+                        <div class="table-content">
+                            <table id="recentRequests">
+                                <thead>
+                                    <tr>
+                                        <th>تاریخ</th>
+                                        <th>مهمان</th>
+                                        <th>هدف</th>
+                                        <th>وضعیت</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- با JS پر می‌شود -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- بخش درخواست‌ها -->
+                <div class="panel-section" id="requestsSection">
+                    <div class="data-table">
+                        <div class="table-header">همه درخواست‌ها</div>
+                        <div class="table-content">
+                            <div style="margin-bottom: 20px;">
+                                <button class="btn-primary" id="newRequestBtn">
+                                    <i class="fas fa-plus"></i> درخواست جدید
+                                </button>
+                            </div>
+                            <table id="allRequests">
+                                <thead>
+                                    <tr>
+                                        <th>شناسه</th>
+                                        <th>میزبان</th>
+                                        <th>تاریخ مراجعه</th>
+                                        <th>هدف</th>
+                                        <th>وضعیت</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- با JS پر می‌شود -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- بخش مهمانان -->
+                <div class="panel-section" id="visitorsSection">
+                    <div class="data-table">
+                        <div class="table-header">مهمانان امروز</div>
+                        <div class="table-content">
+                            <table id="todayVisitorsTable">
+                                <thead>
+                                    <tr>
+                                        <th>نام</th>
+                                        <th>میزبان</th>
+                                        <th>ساعت ورود</th>
+                                        <th>ساعت خروج</th>
+                                        <th>وضعیت</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- با JS پر می‌شود -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- بخش پروفایل -->
+                <div class="panel-section" id="profileSection">
+                    <div style="max-width: 500px; margin: 0 auto;">
+                        <div class="form-group">
+                            <label>نام کامل</label>
+                            <input type="text" class="form-control" id="profileName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>ایمیل</label>
+                            <input type="email" class="form-control" id="profileEmail" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>نقش</label>
+                            <input type="text" class="form-control" id="profileRole" readonly>
+                        </div>
+                        <button class="btn-primary" id="editProfileBtn">
+                            <i class="fas fa-edit"></i> ویرایش پروفایل
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- بخش تنظیمات -->
+                <div class="panel-section" id="settingsSection">
+                    <div style="max-width: 500px; margin: 0 auto;">
+                        <h3 style="margin-bottom: 20px;">تنظیمات حساب کاربری</h3>
+                        <div class="form-group">
+                            <label>تغییر رمز عبور</label>
+                            <input type="password" class="form-control" placeholder="رمز عبور فعلی">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="رمز عبور جدید">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="تکرار رمز عبور جدید">
+                        </div>
+                        <button class="btn-primary">
+                            <i class="fas fa-save"></i> ذخیره تغییرات
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // مدیریت وضعیت کاربر
+        const user = JSON.parse(localStorage.getItem('user')) || null;
+        
+        if (!user || !user.loggedIn) {
+            window.location.href = 'login.html';
+        }
+        
+        // نمایش اطلاعات کاربر
+        document.getElementById('welcomeUser').textContent = `خوش آمدید، ${user.fullName}`;
+        document.getElementById('userName').textContent = user.fullName;
+        document.getElementById('userRole').textContent = user.role;
+        document.getElementById('profileName').value = user.fullName;
+        document.getElementById('profileEmail').value = user.email;
+        document.getElementById('profileRole').value = user.role;
+        
+        // مدیریت منو
+        const menuItems = document.querySelectorAll('.menu-item');
+        const sections = document.querySelectorAll('.panel-section');
+        
+        menuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // حذف کلاس active از همه
+                menuItems.forEach(i => i.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                
+                // اضافه کردن active به آیتم انتخاب شده
+                this.classList.add('active');
+                
+                // نمایش بخش مربوطه
+                const sectionId = this.dataset.section + 'Section';
+                document.getElementById(sectionId).classList.add('active');
+                
+                // تغییر عنوان صفحه
+                const titles = {
+                    dashboard: 'داشبورد',
+                    requests: 'درخواست‌ها',
+                    visitors: 'مهمانان',
+                    profile: 'پروفایل',
+                    settings: 'تنظیمات'
+                };
+                document.getElementById('pageTitle').textContent = titles[this.dataset.section];
+                
+                // نمایش دکمه‌های عملیات
+                updateActionButtons(this.dataset.section);
+                
+                // بارگذاری داده‌های مربوطه
+                loadSectionData(this.dataset.section);
+            });
+        });
+        
+        // به‌روزرسانی دکمه‌های عملیات
+        function updateActionButtons(section) {
+            const actionDiv = document.getElementById('actionButtons');
+            
+            if (section === 'requests') {
+                actionDiv.innerHTML = `
+                    <button class="btn-primary" id="newRequestBtn">
+                        <i class="fas fa-plus"></i> درخواست جدید
+                    </button>
+                `;
+                document.getElementById('newRequestBtn').addEventListener('click', showNewRequestForm);
+            } else {
+                actionDiv.innerHTML = '';
+            }
+        }
+        
+        // بارگذاری داده‌های هر بخش
+        function loadSectionData(section) {
+            // داده‌های نمونه
+            const sampleRequests = [
+                { id: 1, guest: "علی محمدی", host: "احمد رضایی", date: "۱۴۰۲/۱۲/۱۵", purpose: "جلسه کاری", status: "pending" },
+                { id: 2, guest: "سارا کریمی", host: "محمد حسینی", date: "۱۴۰۲/۱۲/۱۶", purpose: "تحویل مدارک", status: "approved" },
+                { id: 3, guest: "رضا محمودی", host: "فاطمه امینی", date: "۱۴۰۲/۱۲/۱۷", purpose: "مصاحبه", status: "rejected" }
+            ];
+            
+            const sampleVisitors = [
+                { name: "علی محمدی", host: "احمد رضایی", entry: "۰۸:۳۰", exit: "۱۲:۰۰", status: "خارج شده" },
+                { name: "سارا کریمی", host: "محمد حسینی", entry: "۰۹:۱۵", exit: "-", status: "داخل مجموعه" }
+            ];
+            
+            if (section === 'dashboard') {
+                // آمار
+                document.getElementById('totalRequests').textContent = sampleRequests.length;
+                document.getElementById('approvedRequests').textContent = sampleRequests.filter(r => r.status === 'approved').length;
+                document.getElementById('pendingRequests').textContent = sampleRequests.filter(r => r.status === 'pending').length;
+                document.getElementById('todayVisitors').textContent = sampleVisitors.length;
+                
+                // آخرین درخواست‌ها
+                const tbody = document.querySelector('#recentRequests tbody');
+                tbody.innerHTML = sampleRequests.map(request => `
+                    <tr>
+                        <td>${request.date}</td>
+                        <td>${request.guest}</td>
+                        <td>${request.purpose}</td>
+                        <td><span class="status ${request.status}">${getStatusText(request.status)}</span></td>
+                        <td>
+                            <button class="btn-outline" style="padding: 5px 10px; font-size: 0.9rem;">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+                
+            } else if (section === 'requests') {
+                // همه درخواست‌ها
+                const tbody = document.querySelector('#allRequests tbody');
+                tbody.innerHTML = sampleRequests.map(request => `
+                    <tr>
+                        <td>${request.id}</td>
+                        <td>${request.host}</td>
+                        <td>${request.date}</td>
+                        <td>${request.purpose}</td>
+                        <td><span class="status ${request.status}">${getStatusText(request.status)}</span></td>
+                        <td>
+                            ${user.role === 'host' || user.role === 'admin' ? `
+                                <button class="btn-primary" style="padding: 5px 10px; font-size: 0.9rem; margin-left: 5px;">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="btn-outline" style="padding: 5px 10px; font-size: 0.9rem;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            ` : ''}
+                            <button class="btn-outline" style="padding: 5px 10px; font-size: 0.9rem;">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+                
+            } else if (section === 'visitors') {
+                // مهمانان امروز
+                const tbody = document.querySelector('#todayVisitorsTable tbody');
+                tbody.innerHTML = sampleVisitors.map(visitor => `
+                    <tr>
+                        <td>${visitor.name}</td>
+                        <td>${visitor.host}</td>
+                        <td>${visitor.entry}</td>
+                        <td>${visitor.exit}</td>
+                        <td>${visitor.status}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+        
+        // تبدیل وضعیت انگلیسی به فارسی
+        function getStatusText(status) {
+            const statusMap = {
+                pending: 'در انتظار',
+                approved: 'تأیید شده',
+                rejected: 'رد شده'
+            };
+            return statusMap[status] || status;
+        }
+        
+        // فرم درخواست جدید
+        function showNewRequestForm() {
+            const formHtml = `
+                <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                    <h3 style="margin-bottom: 20px;">ثبت درخواست ورود جدید</h3>
+                    <form id="newRequestForm">
+                        <div class="form-group">
+                            <label>نام میزبان</label>
+                            <input type="text" class="form-control" placeholder="نام میزبان را وارد کنید" required>
+                        </div>
+                        <div class="form-group">
+                            <label>هدف مراجعه</label>
+                            <textarea class="form-control" rows="3" placeholder="هدف از مراجعه را توضیح دهید" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>تاریخ مراجعه</label>
+                            <input type="date" class="form-control" required>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="submit" class="btn-primary">ثبت درخواست</button>
+                            <button type="button" class="btn-outline" id="cancelRequestBtn">انصراف</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            const requestsSection = document.getElementById('requestsSection');
+            requestsSection.insertAdjacentHTML('afterbegin', formHtml);
+            
+            // مدیریت فرم
+            document.getElementById('newRequestForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('درخواست با موفقیت ثبت شد!');
+                this.parentElement.remove();
+            });
+            
+            document.getElementById('cancelRequestBtn').addEventListener('click', function() {
+                this.closest('div').remove();
+            });
+        }
+        
+        // مخفی کردن منوها بر اساس نقش
+        function updateMenuBasedOnRole() {
+            if (user.role === 'guest') {
+                document.getElementById('visitorsMenu').style.display = 'none';
+                document.getElementById('settingsMenu').style.display = 'none';
+            } else if (user.role === 'host') {
+                // همه منوها نمایش داده می‌شوند
+            } else if (user.role === 'security') {
+                document.getElementById('requestsMenu').textContent = 'تأیید درخواست‌ها';
+                document.getElementById('requestsMenu').querySelector('i').className = 'fas fa-user-check';
+            }
+        }
+        
+        // اجرای اولیه
+        updateMenuBasedOnRole();
+        loadSectionData('dashboard');
+        
+        // خروج از سیستم
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        });
+        
+        // ویرایش پروفایل
+        document.getElementById('editProfileBtn').addEventListener('click', function() {
+            const nameInput = document.getElementById('profileName');
+            const emailInput = document.getElementById('profileEmail');
+            
+            if (nameInput.readOnly) {
+                nameInput.readOnly = false;
+                emailInput.readOnly = false;
+                this.innerHTML = '<i class="fas fa-save"></i> ذخیره تغییرات';
+            } else {
+                // ذخیره تغییرات
+                user.fullName = nameInput.value;
+                user.email = emailInput.value;
+                localStorage.setItem('user', JSON.stringify(user));
+                
+                nameInput.readOnly = true;
+                emailInput.readOnly = true;
+                this.innerHTML = '<i class="fas fa-edit"></i> ویرایش پروفایل';
+                
+                // به‌روزرسانی اطلاعات در صفحه
+                document.getElementById('welcomeUser').textContent = `خوش آمدید، ${user.fullName}`;
+                document.getElementById('userName').textContent = user.fullName;
+                
+                alert('تغییرات ذخیره شد');
+            }
+        });
+    </script>
+</body>
+</html>

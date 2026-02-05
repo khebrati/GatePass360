@@ -1,0 +1,55 @@
+<!-- ساختار مشابه، اما محتوا: -->
+<div class="panel-container">
+    <div class="panel-header">
+        <div class="user-info">
+            <div class="user-icon" style="background: #e74c3c;">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div>
+                <h3 id="userName">حراست</h3>
+                <p style="color: #666; font-size: 0.9rem;">🛡️ نقش: حراست</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- کارت درخواست‌های تأیید شده -->
+    <div class="card">
+        <h2 class="card-title">درخواست‌های تأیید شده (برای صدور مجوز)</h2>
+        <table class="requests-table">
+            <thead>
+                <tr>
+                    <th>مهمان</th>
+                    <th>میزبان</th>
+                    <th>تاریخ</th>
+                    <th>کد مجوز</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody id="approvedRequests">
+                <!-- پر می‌شود -->
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- کارت ثبت ورود/خروج -->
+    <div class="card">
+        <h2 class="card-title">ثبت ورود و خروج</h2>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+                <h3>ورود مهمان</h3>
+                <form id="checkinForm">
+                    <input type="text" placeholder="کد مجوز" class="form-control" style="margin-bottom: 10px;">
+                    <button type="submit" class="btn-primary">ثبت ورود</button>
+                </form>
+            </div>
+            
+            <div style="flex: 1; min-width: 300px;">
+                <h3>خروج مهمان</h3>
+                <form id="checkoutForm">
+                    <input type="text" placeholder="کد مجوز" class="form-control" style="margin-bottom: 10px;">
+                    <button type="submit" class="btn-primary">ثبت خروج</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

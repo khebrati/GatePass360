@@ -1,0 +1,74 @@
+<!-- ساختار مشابه، اما محتوا متفاوت -->
+<div class="panel-container">
+    <div class="panel-header">
+        <div class="user-info">
+            <div class="user-icon" style="background: #2ecc71;">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <div>
+                <h3 id="userName">میزبان</h3>
+                <p style="color: #666; font-size: 0.9rem;">🏢 نقش: میزبان</p>
+            </div>
+        </div>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> خروج
+        </button>
+    </div>
+    
+    <!-- کارت درخواست‌های در انتظار -->
+    <div class="card">
+        <h2 class="card-title">درخواست‌های در انتظار تأیید</h2>
+        <table class="requests-table">
+            <thead>
+                <tr>
+                    <th>مهمان</th>
+                    <th>تاریخ</th>
+                    <th>هدف</th>
+                    <th>توضیحات</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody id="pendingRequests">
+                <!-- پر می‌شود -->
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- کارت تاریخچه -->
+    <div class="card">
+        <h2 class="card-title">تاریخچه درخواست‌ها</h2>
+        <table class="requests-table">
+            <thead>
+                <tr>
+                    <th>مهمان</th>
+                    <th>تاریخ</th>
+                    <th>هدف</th>
+                    <th>وضعیت</th>
+                    <th>توضیحات</th>
+                </tr>
+            </thead>
+            <tbody id="requestHistory">
+                <!-- پر می‌شود -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // بررسی نقش
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || user.role !== 'host') {
+        window.location.href = 'login.html';
+    }
+    
+    // توابع تأیید و رد
+    function approveRequest(requestId) {
+        alert(`درخواست ${requestId} تأیید شد`);
+        loadRequests();
+    }
+    
+    function rejectRequest(requestId) {
+        alert(`درخواست ${requestId} رد شد`);
+        loadRequests();
+    }
+</script>
