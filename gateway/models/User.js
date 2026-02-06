@@ -98,6 +98,19 @@ class User {
   }
 
   /**
+   * Find host by email (verifies role is 'host')
+   * @param {string} email
+   * @returns {Promise<Object|null>}
+   */
+  static async findHostByEmail(email) {
+    const result = await pool.query(
+      'SELECT id, name, email FROM "User" WHERE email = $1 AND role = $2',
+      [email.toLowerCase(), 'host']
+    );
+    return result.rows[0] || null;
+  }
+
+  /**
    * Get all users (for admin)
    * @returns {Promise<Array>}
    */

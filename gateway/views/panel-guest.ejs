@@ -115,9 +115,13 @@
             font-size: 0.9rem;
         }
         
-        .status-pending { background: #fff3cd; color: #856404; }
+        /* Status colors for different states */
+        .status-pending-host { background: #fff3cd; color: #856404; }
+        .status-pending-security { background: #cce5ff; color: #004085; }
         .status-approved { background: #d4edda; color: #155724; }
-        .status-rejected { background: #f8d7da; color: #721c24; }
+        .status-rejected-host { background: #f8d7da; color: #721c24; }
+        .status-rejected-security { background: #f5c6cb; color: #721c24; }
+        .status-pending { background: #fff3cd; color: #856404; }
     </style>
 </head>
 <body>
@@ -220,38 +224,10 @@
             const user = await initPanel(['guest'], function(user) {
                 // Display user info
                 displayUserInfo(user);
-                // Load requests
-                loadRequests();
             });
         })();
-
-        // فرم درخواست جدید
-        document.getElementById('newRequestForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('درخواست شما ثبت شد و در انتظار تأیید میزبان است.');
-            this.reset();
-            loadRequests();
-        });
-        
-        // بارگذاری درخواست‌ها
-        function loadRequests() {
-            const requests = [
-                { date: '۱۴۰۲/۱۲/۱۰', host: 'احمد رضایی', purpose: 'جلسه کاری', status: 'approved', notes: 'تأیید شده' },
-                { date: '۱۴۰۲/۱۲/۱۲', host: 'مریم کریمی', purpose: 'تحویل مدارک', status: 'pending', notes: 'در انتظار' },
-                { date: '۱۴۰۲/۱۲/۰۸', host: 'محمد حسینی', purpose: 'مصاحبه', status: 'rejected', notes: 'رد شده' }
-            ];
-            
-            const tbody = document.getElementById('myRequests');
-            tbody.innerHTML = requests.map(req => `
-                <tr>
-                    <td>${req.date}</td>
-                    <td>${req.host}</td>
-                    <td>${req.purpose}</td>
-                    <td><span class="status status-${req.status}">${getStatusText(req.status)}</span></td>
-                    <td>${req.notes}</td>
-                </tr>
-            `).join('');
-        }
     </script>
+    <!-- Guest Panel specific script - calls API after page load -->
+    <script src="/javascripts/panel-guest.js"></script>
 </body>
 </html>

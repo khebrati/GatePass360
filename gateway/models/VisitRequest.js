@@ -63,6 +63,7 @@ class VisitRequest {
       `SELECT 
         vr.id,
         vr.purpose,
+        vr.description,
         vr.visit_date,
         vr.status,
         vr.rejection_reason,

@@ -10,14 +10,14 @@ const visitController = {
    */
   createVisit: async (req, res) => {
     try {
-      const { host_id, purpose, visit_date } = req.body;
+      const { host_email, purpose, description, visit_date } = req.body;
       const guest_id = req.user.id;
 
       // Validate required fields
-      if (!host_id || !purpose || !visit_date) {
+      if (!host_email || !purpose || !visit_date) {
         return res.status(400).json({
           success: false,
-          message: 'Host ID, purpose, and visit date are required'
+          message: 'Host email, purpose, and visit date are required'
         });
       }
 
@@ -40,8 +40,8 @@ const visitController = {
         });
       }
 
-      // Verify host exists and has 'host' role
-      const host = await User.findHostById(host_id);
+      // Find host by email and verify they have 'host' role
+      const host = await User.findHostByEmail(host_email);
       if (!host) {
         return res.status(404).json({
           success: false,
@@ -52,8 +52,9 @@ const visitController = {
       // Create visit request
       const visitRequest = await VisitRequest.create({
         guest_id,
-        host_id,
+        host_id: host.id,
         purpose,
+        description,
         visit_date
       });
 
@@ -64,6 +65,7 @@ const visitController = {
           visit: {
             id: visitRequest.id,
             purpose: visitRequest.purpose,
+            description: visitRequest.description,
             visit_date: visitRequest.visit_date,
             status: visitRequest.status,
             created_at: visitRequest.created_at,
