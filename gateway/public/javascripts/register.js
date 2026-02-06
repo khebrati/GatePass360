@@ -14,8 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const errorDiv = document.getElementById('errorMessage');
   const submitBtn = form.querySelector('button[type="submit"]');
   const originalBtnText = submitBtn.innerHTML;
-  const roleInput = document.getElementById('role');
-  const roleOptions = document.querySelectorAll('.role-option');
 
   /**
    * Show error message
@@ -49,18 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Handle role selection
-  roleOptions.forEach(option => {
-    option.addEventListener('click', function() {
-      // Remove previous selection
-      roleOptions.forEach(opt => opt.classList.remove('selected'));
-
-      // Add selection to clicked option
-      this.classList.add('selected');
-      roleInput.value = this.dataset.role;
-    });
-  });
-
   // Real-time password confirmation validation
   const passwordInput = document.getElementById('password');
   const confirmInput = document.getElementById('confirmPassword');
@@ -82,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    const role = roleInput.value;
     const terms = document.getElementById('terms').checked;
 
     // Hide previous errors
@@ -109,11 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    if (!role) {
-      showError('لطفاً نقش خود را انتخاب کنید');
-      return;
-    }
-
     if (!terms) {
       showError('لطفاً با قوانین موافقت کنید');
       return;
@@ -123,12 +103,11 @@ document.addEventListener('DOMContentLoaded', function() {
     setLoading(true);
 
     try {
-      // Prepare user data for API
+      // Prepare user data for API (role is assigned by backend as 'guest')
       const userData = {
         name: fullName,
         email: email,
-        password: password,
-        role: role
+        password: password
       };
 
       // Call register API
@@ -138,8 +117,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Save session data
         AuthService.saveSession(result.data);
 
-        // Redirect to appropriate dashboard
-        AuthService.redirectToDashboard(result.data.user.role);
+        // Redirect to guest dashboard (all new users are guests)
+        AuthService.redirectToDashboard('guest');
       } else {
         // Show error message from server
         showError(result.message || 'خطا در ثبت‌نام');

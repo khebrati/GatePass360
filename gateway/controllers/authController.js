@@ -15,7 +15,7 @@ const authController = {
    */
   register: async (req, res) => {
     try {
-      const { name, email, password, phone, role } = req.body;
+      const { name, email, password, phone } = req.body;
 
       // Validate required fields
       if (!name || !email || !password) {
@@ -41,14 +41,8 @@ const authController = {
         });
       }
 
-      // Validate role if provided
-      const userRole = role || 'guest';
-      if (!VALID_ROLES.includes(userRole)) {
-        return res.status(400).json({
-          success: false,
-          message: 'Invalid role. Must be one of: guest, host, security, admin'
-        });
-      }
+      // All new users are registered as 'guest' - only admin can change roles
+      const userRole = 'guest';
 
       // Check if user already exists
       const existingUser = await User.existsByEmail(email);
