@@ -92,9 +92,22 @@
             font-size: 0.9rem;
         }
 
-        .status-pending { background: #fff3cd; color: #856404; }
+        /* Status colors for different states */
+        .status-pending-host { background: #fff3cd; color: #856404; }
+        .status-pending-security { background: #cce5ff; color: #004085; }
         .status-approved { background: #d4edda; color: #155724; }
-        .status-rejected { background: #f8d7da; color: #721c24; }
+        .status-rejected-host { background: #f8d7da; color: #721c24; }
+        .status-rejected-security { background: #f5c6cb; color: #721c24; }
+        .status-pending { background: #fff3cd; color: #856404; }
+
+        /* Rejection reason styling */
+        .rejection-reason {
+            color: #721c24;
+            font-size: 0.9rem;
+        }
+        .rejection-reason i {
+            margin-left: 5px;
+        }
 
         .action-btn {
             padding: 5px 10px;
@@ -190,75 +203,15 @@
     <!-- Scripts -->
     <script src="/javascripts/auth.js"></script>
     <script src="/javascripts/panel.js"></script>
+    <script src="/javascripts/panel-host.js"></script>
     <script>
         // Initialize panel
         (async function() {
             const user = await initPanel(['host'], function(user) {
                 // Display user info
                 displayUserInfo(user);
-                // Load data
-                loadPendingRequests();
-                loadHistory();
             });
         })();
-
-        // بارگذاری درخواست‌های در انتظار
-        function loadPendingRequests() {
-            const requests = [
-                { id: 1, guest: 'علی محمدی', date: '۱۴۰۲/۱۲/۱۵', purpose: 'جلسه کاری', notes: 'درباره پروژه جدید' },
-                { id: 2, guest: 'سارا کریمی', date: '۱۴۰۲/۱۲/۱۶', purpose: 'تحویل مدارک', notes: 'مدارک قرارداد' }
-            ];
-
-            const tbody = document.getElementById('pendingRequests');
-            tbody.innerHTML = requests.map(req => `
-                <tr>
-                    <td>${req.guest}</td>
-                    <td>${req.date}</td>
-                    <td>${req.purpose}</td>
-                    <td>${req.notes}</td>
-                    <td>
-                        <button class="action-btn approve-btn" onclick="approveRequest(${req.id})">
-                            <i class="fas fa-check"></i> تأیید
-                        </button>
-                        <button class="action-btn reject-btn" onclick="rejectRequest(${req.id})">
-                            <i class="fas fa-times"></i> رد
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // بارگذاری تاریخچه
-        function loadHistory() {
-            const history = [
-                { guest: 'رضا محمودی', date: '۱۴۰۲/۱۲/۱۰', purpose: 'مصاحبه', status: 'approved', notes: 'تأیید شده' },
-                { guest: 'فاطمه امینی', date: '۱۴۰۲/۱۲/۰۸', purpose: 'بازدید', status: 'rejected', notes: 'رد شده' }
-            ];
-
-            const tbody = document.getElementById('requestHistory');
-            tbody.innerHTML = history.map(req => `
-                <tr>
-                    <td>${req.guest}</td>
-                    <td>${req.date}</td>
-                    <td>${req.purpose}</td>
-                    <td><span class="status status-${req.status}">${getStatusText(req.status)}</span></td>
-                    <td>${req.notes}</td>
-                </tr>
-            `).join('');
-        }
-
-        // توابع تأیید و رد
-        function approveRequest(requestId) {
-            alert(`درخواست ${requestId} تأیید شد`);
-            loadPendingRequests();
-            loadHistory();
-        }
-
-        function rejectRequest(requestId) {
-            alert(`درخواست ${requestId} رد شد`);
-            loadPendingRequests();
-            loadHistory();
-        }
     </script>
 </body>
 </html>

@@ -157,7 +157,7 @@ const HostPanel = {
         <td>${formatDate(visit.visit_date)}</td>
         <td>${visit.purpose}</td>
         <td><span class="status status-${this.getStatusClass(visit.status)}">${getStatusText(visit.status)}</span></td>
-        <td>${visit.rejection_reason || visit.description || '-'}</td>
+        <td>${this.formatNotes(visit)}</td>
       </tr>
     `).join('');
   },
@@ -176,6 +176,23 @@ const HostPanel = {
       'rejected_by_security': 'rejected-security'
     };
     return statusClasses[status] || 'pending';
+  },
+
+  /**
+   * Format notes/rejection reason for display
+   * @param {Object} visit
+   * @returns {string}
+   */
+  formatNotes(visit) {
+    // If rejected, show rejection reason with label
+    if (visit.rejection_reason) {
+      return `<span class="rejection-reason"><i class="fas fa-exclamation-circle"></i> ${visit.rejection_reason}</span>`;
+    }
+    // Otherwise show description
+    if (visit.description) {
+      return visit.description;
+    }
+    return '-';
   },
 
   /**
