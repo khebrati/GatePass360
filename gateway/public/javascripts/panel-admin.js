@@ -163,14 +163,57 @@ const AdminPanel = {
   },
 
   /**
-   * Load reports data
+   * Load reports data and all visits table
    */
   async loadReports() {
     const report = await this.getFullReport();
     if (report) {
       this.data.visits = report.visits.list;
+      this.displayAllVisits(report.visits.list);
     }
     this.updateStats();
+  },
+
+  /**
+   * Display all visits in the table
+   * @param {Array} visits
+   */
+  displayAllVisits(visits) {
+    const tbody = document.getElementById('allVisitsList');
+    if (!tbody) return;
+
+    if (!visits || visits.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">هیچ درخواستی یافت نشد</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = visits.map(visit => `
+      <tr>
+        <td>${visit.guest ? visit.guest.name : '-'}</td>
+        <td>${visit.host ? visit.host.name : '-'}</td>
+        <td>${formatDate(visit.visit_date)}</td>
+        <td>${visit.purpose || '-'}</td>
+        <td><span class="status status-${this.getStatusClass(visit.status)}">${getStatusText(visit.status)}</span></td>
+        <td>${visit.pass && visit.pass.issued_by_name ? visit.pass.issued_by_name : '-'}</td>
+        <td>${visit.pass && visit.pass.code ? `<span class="pass-code">${visit.pass.code}</span>` : '-'}</td>
+      </tr>
+    `).join('');
+  },
+
+  /**
+   * Get CSS class for status
+   * @param {string} status
+   * @returns {string}
+   */
+  getStatusClass(status) {
+    const statusClasses = {
+      'pending_host_review': 'pending-host',
+      'pending_security': 'pending-security',
+      'approved': 'approved',
+      'rejected_by_host': 'rejected-host',
+      'rejected_by_security': 'rejected-security'
+    };
+    return statusClasses[status] || 'pending';
   },
 
   /**

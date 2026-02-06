@@ -1,0 +1,163 @@
+/* Auth Pages Styles (Login & Register) */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    padding: 20px;
+    margin-top: 60px;
+}
+
+.auth-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-header i {
+    font-size: 3rem;
+    color: #3498db;
+    margin-bottom: 15px;
+}
+
+.auth-header h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.form-hint {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.form-footer a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.error-message {
+    background: #ffeaea;
+    color: #d63031;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: none;
+}
+
+.forgot-password {
+    display: block;
+    text-align: left;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #666;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    color: #3498db;
+}
+
+/* Register specific styles */
+.auth-card.register {
+    max-width: 500px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.checkbox-group input {
+    width: 18px;
+    height: 18px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 15px;
+    color: #666;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #3498db;
+}
+
+/* Role options (if needed in future) */
+.role-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.role-option {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.role-option:hover {
+    border-color: #3498db;
+}
+
+.role-option.selected {
+    border-color: #3498db;
+    background: #f0f8ff;
+}
+
+.role-option i {
+    font-size: 1.5rem;
+    color: #3498db;
+    margin-bottom: 10px;
+    display: block;
+}
+

@@ -1,0 +1,126 @@
+/* Panel Guest Styles */
+.panel-container {
+    max-width: 1000px;
+    margin: 80px auto 30px;
+    padding: 0 20px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    background: #3498db;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.logout-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.card-title {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+}
+
+.request-form {
+    display: grid;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.form-control {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+.requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.requests-table th {
+    background: #f8f9fa;
+    padding: 15px;
+    text-align: right;
+    border-bottom: 2px solid #eee;
+    color: #2c3e50;
+}
+
+.requests-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* Status colors for different states */
+.status-pending-host { background: #fff3cd; color: #856404; }
+.status-pending-security { background: #cce5ff; color: #004085; }
+.status-approved { background: #d4edda; color: #155724; }
+.status-rejected-host { background: #f8d7da; color: #721c24; }
+.status-rejected-security { background: #f5c6cb; color: #721c24; }
+.status-pending { background: #fff3cd; color: #856404; }
+
+/* Rejection reason styling */
+.rejection-reason {
+    color: #721c24;
+    font-size: 0.9rem;
+}
+.rejection-reason i {
+    margin-left: 5px;
+}
+

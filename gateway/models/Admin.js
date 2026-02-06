@@ -37,13 +37,15 @@ class Admin {
             'valid_from', p.valid_from,
             'valid_until', p.valid_until,
             'is_used', p.is_used,
-            'created_at', p.created_at
+            'created_at', p.created_at,
+            'issued_by_name', s.name
           )
         ELSE NULL END as pass
        FROM "VisitRequest" vr
        JOIN "User" g ON vr.guest_id = g.id
        JOIN "User" h ON vr.host_id = h.id
        LEFT JOIN "Pass" p ON vr.id = p.visit_request_id
+       LEFT JOIN "User" s ON p.issued_by = s.id
        ORDER BY vr.created_at DESC`
     );
     return result.rows;
