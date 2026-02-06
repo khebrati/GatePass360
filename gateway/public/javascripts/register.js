@@ -79,8 +79,10 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    if (!email.includes('@') || !email.includes('.')) {
-      showError('ایمیل معتبر وارد کنید');
+    // Email validation with regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showError('لطفاً یک ایمیل معتبر وارد کنید');
       return;
     }
 
