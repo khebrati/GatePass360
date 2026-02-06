@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل حراست | GatePass360</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .panel-container {
+            max-width: 1000px;
+            margin: 80px auto 30px;
+            padding: 0 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-icon {
+            width: 50px;
+            height: 50px;
+            background: #e74c3c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e74c3c;
+        }
+
+        .requests-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .requests-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: right;
+            border-bottom: 2px solid #eee;
+            color: #2c3e50;
+        }
+
+        .requests-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-control {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .checkin-section {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .checkin-box {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .checkin-box h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 2px;
+            background: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- نوار بالا -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-door-closed"></i>
+                <a href="/" style="text-decoration: none; color: inherit;">
+                    GatePass<span class="highlight">360</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="/">خانه</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- پنل حراست -->
+    <div class="panel-container">
+        <div class="panel-header">
+            <div class="user-info">
+                <div class="user-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div>
+                    <h3 id="userName">حراست</h3>
+                    <p style="color: #666; font-size: 0.9rem;">🛡️ نقش: حراست</p>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> خروج
+            </button>
+        </div>
+
+        <!-- کارت درخواست‌های تأیید شده -->
+        <div class="card">
+            <h2 class="card-title">درخواست‌های تأیید شده (برای صدور مجوز)</h2>
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th>مهمان</th>
+                        <th>میزبان</th>
+                        <th>تاریخ</th>
+                        <th>کد مجوز</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="approvedRequests">
+                    <!-- پر می‌شود -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- کارت ثبت ورود/خروج -->
+        <div class="card">
+            <h2 class="card-title">ثبت ورود و خروج</h2>
+            <div class="checkin-section">
+                <div class="checkin-box">
+                    <h3><i class="fas fa-sign-in-alt"></i> ورود مهمان</h3>
+                    <form id="checkinForm">
+                        <input type="text" placeholder="کد مجوز" class="form-control" style="margin-bottom: 10px;">
+                        <button type="submit" class="btn-primary">ثبت ورود</button>
+                    </form>
+                </div>
+
+                <div class="checkin-box">
+                    <h3><i class="fas fa-sign-out-alt"></i> خروج مهمان</h3>
+                    <form id="checkoutForm">
+                        <input type="text" placeholder="کد مجوز" class="form-control" style="margin-bottom: 10px;">
+                        <button type="submit" class="btn-primary">ثبت خروج</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بررسی نقش
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || user.role !== 'security') {
+            window.location.href = '/login';
+        }
+
+        // نمایش نام کاربر
+        document.getElementById('userName').textContent = user.name;
+
+        // بارگذاری درخواست‌های تأیید شده
+        function loadApprovedRequests() {
+            const requests = [
+                { id: 1, guest: 'علی محمدی', host: 'احمد رضایی', date: '۱۴۰۲/۱۲/۱۵', passCode: 'GP-001' },
+                { id: 2, guest: 'سارا کریمی', host: 'محمد حسینی', date: '۱۴۰۲/۱۲/۱۶', passCode: 'GP-002' }
+            ];
+
+            const tbody = document.getElementById('approvedRequests');
+            tbody.innerHTML = requests.map(req => `
+                <tr>
+                    <td>${req.guest}</td>
+                    <td>${req.host}</td>
+                    <td>${req.date}</td>
+                    <td><strong>${req.passCode}</strong></td>
+                    <td>
+                        <button class="action-btn" onclick="issuePass(${req.id})">
+                            <i class="fas fa-id-card"></i> صدور مجوز
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function issuePass(requestId) {
+            alert(`مجوز برای درخواست ${requestId} صادر شد`);
+        }
+
+        // فرم ثبت ورود
+        document.getElementById('checkinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('ورود مهمان ثبت شد');
+            this.reset();
+        });
+
+        // فرم ثبت خروج
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('خروج مهمان ثبت شد');
+            this.reset();
+        });
+
+        // خروج
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        });
+
+        // اجرای اولیه
+        loadApprovedRequests();
+    </script>
+</body>
+</html>
+

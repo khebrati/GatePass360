@@ -1,11 +1,130 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GatePass360 - سیستم مدیریت تردد</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- نوار بالا -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-door-closed"></i>
+                <span>GatePass<span class="highlight">360</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="/">خانه</a>
+                <a href="#features">ویژگی‌ها</a>
+                <a href="/login" class="btn-outline">ورود</a>
+                <a href="/register" class="btn-primary">ثبت‌نام</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- بخش اصلی -->
+    <section class="hero">
+        <div class="container">
+            <h1>مدیریت هوشمند تردد سازمانی</h1>
+            <p>سیستم آنلاین برای ثبت درخواست ورود، تأیید و پیگیری مهمانان</p>
+            <div class="cta-buttons">
+                <a href="/register" class="btn-primary large">
+                    <i class="fas fa-rocket"></i> شروع کنید
+                </a>
+                <a href="#demo" class="btn-outline large">
+                    <i class="fas fa-play"></i> مشاهده دمو
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ویژگی‌ها -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2>ویژگی‌های سیستم</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="fas fa-user-check"></i>
+                    <h3>ثبت درخواست آنلاین</h3>
+                    <p>مهمانان به راحتی درخواست ورود ثبت می‌کنند</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>تأیید الکترونیکی</h3>
+                    <p>میزبانان درخواست‌ها را به صورت آنلاین تأیید می‌کنند</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-qrcode"></i>
+                    <h3>مدیریت مجوز</h3>
+                    <p>صدور و مدیریت مجوزهای ورود به صورت هوشمند</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- نقش‌ها -->
+    <section class="roles">
+        <div class="container">
+            <h2>نقش‌های سیستم</h2>
+            <div class="roles-grid">
+                <div class="role-card">
+                    <div class="role-icon guest">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>مهمان</h3>
+                    <ul>
+                        <li>ثبت درخواست ورود</li>
+                        <li>پیگیری وضعیت</li>
+                        <li>مشاهده مجوز</li>
+                    </ul>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon host">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3>میزبان</h3>
+                    <ul>
+                        <li>مشاهده درخواست‌ها</li>
+                        <li>تأیید یا رد درخواست</li>
+                        <li>مدیریت مهمانان</li>
+                    </ul>
+                </div>
+                <div class="role-card">
+                    <div class="role-icon security">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>حراست</h3>
+                    <ul>
+                        <li>صدور مجوز ورود</li>
+                        <li>ثبت ورود/خروج</li>
+                        <li>کنترل تردد</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- فوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-door-closed"></i>
+                    <span>GatePass<span class="highlight">360</span></span>
+                </div>
+                <p>پروژه درس مهندسی اینترنت - دانشگاه</p>
+                <p>این یک پروژه آموزشی است</p>
+                <div class="footer-links">
+                    <a href="/login">ورود</a>
+                    <a href="/register">ثبت‌نام</a>
+                    <a href="/panel">داشبورد</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/javascripts/script.js"></script>
+</body>
 </html>

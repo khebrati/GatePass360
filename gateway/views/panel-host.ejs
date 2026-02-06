@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل میزبان | GatePass360</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .panel-container {
+            max-width: 1000px;
+            margin: 80px auto 30px;
+            padding: 0 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-icon {
+            width: 50px;
+            height: 50px;
+            background: #2ecc71;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2ecc71;
+        }
+
+        .requests-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .requests-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: right;
+            border-bottom: 2px solid #eee;
+            color: #2c3e50;
+        }
+
+        .requests-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-approved { background: #d4edda; color: #155724; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 2px;
+        }
+
+        .approve-btn {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .reject-btn {
+            background: #e74c3c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- نوار بالا -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-door-closed"></i>
+                <a href="/" style="text-decoration: none; color: inherit;">
+                    GatePass<span class="highlight">360</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="/">خانه</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- پنل میزبان -->
+    <div class="panel-container">
+        <div class="panel-header">
+            <div class="user-info">
+                <div class="user-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div>
+                    <h3 id="userName">میزبان</h3>
+                    <p style="color: #666; font-size: 0.9rem;">🏢 نقش: میزبان</p>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> خروج
+            </button>
+        </div>
+
+        <!-- کارت درخواست‌های در انتظار -->
+        <div class="card">
+            <h2 class="card-title">درخواست‌های در انتظار تأیید</h2>
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th>مهمان</th>
+                        <th>تاریخ</th>
+                        <th>هدف</th>
+                        <th>توضیحات</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="pendingRequests">
+                    <!-- پر می‌شود -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- کارت تاریخچه -->
+        <div class="card">
+            <h2 class="card-title">تاریخچه درخواست‌ها</h2>
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th>مهمان</th>
+                        <th>تاریخ</th>
+                        <th>هدف</th>
+                        <th>وضعیت</th>
+                        <th>توضیحات</th>
+                    </tr>
+                </thead>
+                <tbody id="requestHistory">
+                    <!-- پر می‌شود -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // بررسی نقش
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || user.role !== 'host') {
+            window.location.href = '/login';
+        }
+
+        // نمایش نام کاربر
+        document.getElementById('userName').textContent = user.name;
+
+        // بارگذاری درخواست‌های در انتظار
+        function loadPendingRequests() {
+            const requests = [
+                { id: 1, guest: 'علی محمدی', date: '۱۴۰۲/۱۲/۱۵', purpose: 'جلسه کاری', notes: 'درباره پروژه جدید' },
+                { id: 2, guest: 'سارا کریمی', date: '۱۴۰۲/۱۲/۱۶', purpose: 'تحویل مدارک', notes: 'مدارک قرارداد' }
+            ];
+
+            const tbody = document.getElementById('pendingRequests');
+            tbody.innerHTML = requests.map(req => `
+                <tr>
+                    <td>${req.guest}</td>
+                    <td>${req.date}</td>
+                    <td>${req.purpose}</td>
+                    <td>${req.notes}</td>
+                    <td>
+                        <button class="action-btn approve-btn" onclick="approveRequest(${req.id})">
+                            <i class="fas fa-check"></i> تأیید
+                        </button>
+                        <button class="action-btn reject-btn" onclick="rejectRequest(${req.id})">
+                            <i class="fas fa-times"></i> رد
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // بارگذاری تاریخچه
+        function loadHistory() {
+            const history = [
+                { guest: 'رضا محمودی', date: '۱۴۰۲/۱۲/۱۰', purpose: 'مصاحبه', status: 'approved', notes: 'تأیید شده' },
+                { guest: 'فاطمه امینی', date: '۱۴۰۲/۱۲/۰۸', purpose: 'بازدید', status: 'rejected', notes: 'رد شده' }
+            ];
+
+            const tbody = document.getElementById('requestHistory');
+            tbody.innerHTML = history.map(req => `
+                <tr>
+                    <td>${req.guest}</td>
+                    <td>${req.date}</td>
+                    <td>${req.purpose}</td>
+                    <td><span class="status status-${req.status}">${getStatusText(req.status)}</span></td>
+                    <td>${req.notes}</td>
+                </tr>
+            `).join('');
+        }
+
+        function getStatusText(status) {
+            const map = { pending: 'در انتظار', approved: 'تأیید شده', rejected: 'رد شده' };
+            return map[status] || status;
+        }
+
+        // توابع تأیید و رد
+        function approveRequest(requestId) {
+            alert(`درخواست ${requestId} تأیید شد`);
+            loadPendingRequests();
+            loadHistory();
+        }
+
+        function rejectRequest(requestId) {
+            alert(`درخواست ${requestId} رد شد`);
+            loadPendingRequests();
+            loadHistory();
+        }
+
+        // خروج
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        });
+
+        // اجرای اولیه
+        loadPendingRequests();
+        loadHistory();
+    </script>
+</body>
+</html>

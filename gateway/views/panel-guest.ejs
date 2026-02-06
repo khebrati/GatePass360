@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پنل مهمان | GatePass360</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .panel-container {
@@ -126,12 +126,12 @@
         <div class="container">
             <div class="logo">
                 <i class="fas fa-door-closed"></i>
-                <a href="index.html" style="text-decoration: none; color: inherit;">
+                <a href="/" style="text-decoration: none; color: inherit;">
                     GatePass<span class="highlight">360</span>
                 </a>
             </div>
             <div class="nav-links">
-                <a href="index.html">خانه</a>
+                <a href="/">خانه</a>
             </div>
         </div>
     </nav>
@@ -215,7 +215,7 @@
         // بررسی لاگین بودن
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user || user.role !== 'guest') {
-            window.location.href = 'login.html';
+            window.location.href = '/login';
         }
         
         // نمایش نام کاربر
@@ -257,7 +257,7 @@
         // خروج
         document.getElementById('logoutBtn').addEventListener('click', function() {
             localStorage.removeItem('user');
-            window.location.href = 'login.html';
+            window.location.href = '/login';
         });
         
         // اجرای اولیه

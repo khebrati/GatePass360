@@ -223,7 +223,7 @@ async function logout() {
 
     if (!token) {
       // Already logged out, redirect to login
-      window.location.href = '/login.html';
+      window.location.href = '/login.ejs';
       return;
     }
 
@@ -241,7 +241,7 @@ async function logout() {
     localStorage.removeItem('user');
 
     // Redirect to login page
-    window.location.href = '/login.html';
+    window.location.href = '/login.ejs';
 
     return data;
   } catch (error) {
@@ -249,7 +249,7 @@ async function logout() {
     // Clear storage and redirect anyway
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = '/login.html';
+    window.location.href = '/login.ejs';
   }
 }
 
@@ -310,7 +310,7 @@ async function getCurrentUser() {
 
     if (!token) {
       // No token, redirect to login
-      window.location.href = '/login.html';
+      window.location.href = '/login.ejs';
       return null;
     }
 
@@ -329,7 +329,7 @@ async function getCurrentUser() {
       // Token invalid, clear storage and redirect
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login.html';
+      window.location.href = '/login.ejs';
       return null;
     }
   } catch (error) {
@@ -389,7 +389,7 @@ async function guardPage(allowedRoles) {
   const token = localStorage.getItem('token');
 
   if (!token) {
-    window.location.href = '/login.html';
+    window.location.href = '/login.ejs';
     return null;
   }
 
@@ -406,7 +406,7 @@ async function guardPage(allowedRoles) {
       // Token invalid
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login.html';
+      window.location.href = '/login.ejs';
       return null;
     }
 
@@ -422,7 +422,7 @@ async function guardPage(allowedRoles) {
     return user;
   } catch (error) {
     console.error('Auth guard error:', error);
-    window.location.href = '/login.html';
+    window.location.href = '/login.ejs';
     return null;
   }
 }
@@ -572,7 +572,7 @@ const Auth = {
     }
 
     this.clearAuthData();
-    window.location.href = '/login.html';
+    window.location.href = '/login.ejs';
   },
 
   /**
@@ -605,7 +605,7 @@ const Auth = {
    */
   async guard(allowedRoles) {
     if (!this.isLoggedIn()) {
-      window.location.href = '/login.html';
+      window.location.href = '/login.ejs';
       return null;
     }
 
@@ -613,7 +613,7 @@ const Auth = {
 
     if (!user) {
       this.clearAuthData();
-      window.location.href = '/login.html';
+      window.location.href = '/login.ejs';
       return null;
     }
 
@@ -646,7 +646,7 @@ const Auth = {
     // Handle token expiration
     if (response.status === 401 || response.status === 403) {
       this.clearAuthData();
-      window.location.href = '/login.html';
+      window.location.href = '/login.ejs';
     }
 
     return data;

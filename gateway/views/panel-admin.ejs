@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیر | GatePass360</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .panel-container {
+            max-width: 1000px;
+            margin: 80px auto 30px;
+            padding: 0 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-icon {
+            width: 50px;
+            height: 50px;
+            background: #9b59b6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #9b59b6;
+        }
+
+        .requests-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .requests-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: right;
+            border-bottom: 2px solid #eee;
+            color: #2c3e50;
+        }
+
+        .requests-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .stat-box h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .stat-box p {
+            margin: 8px 0;
+            color: #666;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 2px;
+        }
+
+        .edit-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- نوار بالا -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-door-closed"></i>
+                <a href="/" style="text-decoration: none; color: inherit;">
+                    GatePass<span class="highlight">360</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="/">خانه</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- پنل مدیر -->
+    <div class="panel-container">
+        <div class="panel-header">
+            <div class="user-info">
+                <div class="user-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div>
+                    <h3 id="userName">مدیر سیستم</h3>
+                    <p style="color: #666; font-size: 0.9rem;">👑 نقش: مدیر</p>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> خروج
+            </button>
+        </div>
+
+        <!-- کارت مدیریت کاربران -->
+        <div class="card">
+            <h2 class="card-title">مدیریت کاربران</h2>
+            <table class="requests-table">
+                <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>ایمیل</th>
+                        <th>نقش</th>
+                        <th>تاریخ ثبت‌نام</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody id="usersList">
+                    <!-- پر می‌شود -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- کارت گزارشات -->
+        <div class="card">
+            <h2 class="card-title">گزارشات سیستم</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3><i class="fas fa-chart-bar"></i> آمار کلی</h3>
+                    <p>تعداد کاربران: <strong id="totalUsers">۰</strong></p>
+                    <p>درخواست‌های امروز: <strong id="todayRequests">۰</strong></p>
+                    <p>مهمانان حاضر: <strong id="currentVisitors">۰</strong></p>
+                </div>
+
+                <div class="stat-box">
+                    <h3><i class="fas fa-download"></i> گزارش روزانه</h3>
+                    <button class="btn-primary" style="margin-bottom: 10px; width: 100%;">
+                        <i class="fas fa-file-excel"></i> دانلود Excel
+                    </button>
+                    <button class="btn-outline" style="width: 100%;">
+                        <i class="fas fa-print"></i> چاپ گزارش
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بررسی نقش
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || user.role !== 'admin') {
+            window.location.href = '/login';
+        }
+
+        // نمایش نام کاربر
+        document.getElementById('userName').textContent = user.name;
+
+        // بارگذاری لیست کاربران
+        function loadUsers() {
+            const users = [
+                { name: 'علی محمدی', email: 'ali@example.com', role: 'guest', date: '۱۴۰۲/۱۰/۱۵' },
+                { name: 'احمد رضایی', email: 'ahmad@example.com', role: 'host', date: '۱۴۰۲/۱۰/۲۰' },
+                { name: 'حراست نمونه', email: 'security@example.com', role: 'security', date: '۱۴۰۲/۱۱/۰۱' },
+                { name: 'مدیر سیستم', email: 'admin@example.com', role: 'admin', date: '۱۴۰۲/۰۹/۰۱' }
+            ];
+
+            const tbody = document.getElementById('usersList');
+            tbody.innerHTML = users.map((u, index) => `
+                <tr>
+                    <td>${u.name}</td>
+                    <td>${u.email}</td>
+                    <td>${getRoleText(u.role)}</td>
+                    <td>${u.date}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editUser(${index})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteUser(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // به‌روزرسانی آمار
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('todayRequests').textContent = '۱۲';
+            document.getElementById('currentVisitors').textContent = '۳';
+        }
+
+        function getRoleText(role) {
+            const map = { guest: 'مهمان', host: 'میزبان', security: 'حراست', admin: 'مدیر' };
+            return map[role] || role;
+        }
+
+        function editUser(index) {
+            alert('ویرایش کاربر ' + (index + 1));
+        }
+
+        function deleteUser(index) {
+            if (confirm('آیا از حذف این کاربر اطمینان دارید؟')) {
+                alert('کاربر حذف شد');
+                loadUsers();
+            }
+        }
+
+        // خروج
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        });
+
+        // اجرای اولیه
+        loadUsers();
+    </script>
+</body>
+</html>
+
