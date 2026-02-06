@@ -164,78 +164,8 @@
         </div>
     </div>
 
-    <!-- 🔴 اسکریپت اصلاح شده -->
-    <script>
-        // تابع نمایش خطا
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-        }
-        
-        // فرم ورود
-        const form = document.getElementById('loginForm');
-        
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // پاک کردن خطاهای قبلی
-            document.getElementById('errorMessage').style.display = 'none';
-            
-            // 🔴 شبیه‌سازی ورود - کاربران نمونه
-            const users = {
-                'guest@example.com': {password: '123456', role: 'guest', name: 'مهمان نمونه'},
-                'host@example.com': {password: '123456', role: 'host', name: 'میزبان نمونه'},
-                'security@example.com': {password: '123456', role: 'security', name: 'حراست نمونه'},
-                'admin@example.com': {password: '123456', role: 'admin', name: 'مدیر نمونه'}
-            };
-            
-            if (users[email] && users[email].password === password) {
-                const user = users[email];
-                
-                // ذخیره در localStorage
-                localStorage.setItem('user', JSON.stringify({
-                    email: email,
-                    name: user.name,
-                    role: user.role,
-                    loggedIn: true
-                }));
-                
-                // 🔴 هدایت بر اساس نقش
-                const redirects = {
-                    'guest': '/panel/guest',
-                    'host': '/panel/host',
-                    'security': '/panel/security',
-                    'admin': '/panel/admin'
-                };
-                
-                window.location.href = redirects[user.role];
-                
-            } else {
-                showError('ایمیل یا رمز عبور اشتباه است');
-            }
-        });
-        
-        // 🔴 اگر کاربر قبلاً وارد شده، بررسی کن و هدایت کن
-        document.addEventListener('DOMContentLoaded', function() {
-            const user = localStorage.getItem('user');
-            if (user) {
-                const userObj = JSON.parse(user);
-                if (userObj.loggedIn) {
-                    // هدایت به پنل مناسب
-                    const redirects = {
-                        'guest': '/panel/guest',
-                        'host': '/panel/host',
-                        'security': '/panel/security',
-                        'admin': '/panel/admin'
-                    };
-                    window.location.href = redirects[userObj.role];
-                }
-            }
-        });
-    </script>
+    <!-- Authentication Scripts -->
+    <script src="/javascripts/auth.js"></script>
+    <script src="/javascripts/login.js"></script>
 </body>
 </html>

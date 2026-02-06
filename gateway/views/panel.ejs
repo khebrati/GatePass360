@@ -456,22 +456,31 @@
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="/javascripts/auth.js"></script>
+    <script src="/javascripts/panel.js"></script>
     <script>
-        // مدیریت وضعیت کاربر
-        const user = JSON.parse(localStorage.getItem('user')) || null;
-        
-        if (!user || !user.loggedIn) {
-            window.location.href = '/login';
-        }
-        
-        // نمایش اطلاعات کاربر
-        document.getElementById('welcomeUser').textContent = `خوش آمدید، ${user.fullName}`;
-        document.getElementById('userName').textContent = user.fullName;
-        document.getElementById('userRole').textContent = user.role;
-        document.getElementById('profileName').value = user.fullName;
-        document.getElementById('profileEmail').value = user.email;
-        document.getElementById('profileRole').value = user.role;
-        
+        let currentUser = null;
+
+        // Initialize panel
+        (async function() {
+            currentUser = await initPanel(null, function(user) {
+                // Display user info
+                document.getElementById('welcomeUser').textContent = `خوش آمدید، ${user.name}`;
+                document.getElementById('userName').textContent = user.name;
+                document.getElementById('userRole').textContent = getRoleName(user.role);
+                document.getElementById('profileName').value = user.name;
+                document.getElementById('profileEmail').value = user.email;
+                document.getElementById('profileRole').value = getRoleName(user.role);
+
+                // Setup menu based on role
+                updateMenuBasedOnRole(user);
+
+                // Load initial data
+                loadSectionData('dashboard');
+            });
+        })();
+
         // مدیریت منو
         const menuItems = document.querySelectorAll('.menu-item');
         const sections = document.querySelectorAll('.panel-section');
@@ -565,6 +574,7 @@
             } else if (section === 'requests') {
                 // همه درخواست‌ها
                 const tbody = document.querySelector('#allRequests tbody');
+                const user = currentUser || AuthService.getUser();
                 tbody.innerHTML = sampleRequests.map(request => `
                     <tr>
                         <td>${request.id}</td>
@@ -573,7 +583,7 @@
                         <td>${request.purpose}</td>
                         <td><span class="status ${request.status}">${getStatusText(request.status)}</span></td>
                         <td>
-                            ${user.role === 'host' || user.role === 'admin' ? `
+                            ${user && (user.role === 'host' || user.role === 'admin') ? `
                                 <button class="btn-primary" style="padding: 5px 10px; font-size: 0.9rem; margin-left: 5px;">
                                     <i class="fas fa-check"></i>
                                 </button>
@@ -601,16 +611,6 @@
                     </tr>
                 `).join('');
             }
-        }
-        
-        // تبدیل وضعیت انگلیسی به فارسی
-        function getStatusText(status) {
-            const statusMap = {
-                pending: 'در انتظار',
-                approved: 'تأیید شده',
-                rejected: 'رد شده'
-            };
-            return statusMap[status] || status;
         }
         
         // فرم درخواست جدید
@@ -655,28 +655,20 @@
         }
         
         // مخفی کردن منوها بر اساس نقش
-        function updateMenuBasedOnRole() {
+        function updateMenuBasedOnRole(user) {
             if (user.role === 'guest') {
                 document.getElementById('visitorsMenu').style.display = 'none';
                 document.getElementById('settingsMenu').style.display = 'none';
             } else if (user.role === 'host') {
                 // همه منوها نمایش داده می‌شوند
             } else if (user.role === 'security') {
-                document.getElementById('requestsMenu').textContent = 'تأیید درخواست‌ها';
-                document.getElementById('requestsMenu').querySelector('i').className = 'fas fa-user-check';
+                const requestsMenu = document.getElementById('requestsMenu');
+                if (requestsMenu) {
+                    requestsMenu.innerHTML = '<i class="fas fa-user-check"></i> تأیید درخواست‌ها';
+                }
             }
         }
-        
-        // اجرای اولیه
-        updateMenuBasedOnRole();
-        loadSectionData('dashboard');
-        
-        // خروج از سیستم
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            localStorage.removeItem('user');
-            window.location.href = '/login';
-        });
-        
+
         // ویرایش پروفایل
         document.getElementById('editProfileBtn').addEventListener('click', function() {
             const nameInput = document.getElementById('profileName');
@@ -688,7 +680,8 @@
                 this.innerHTML = '<i class="fas fa-save"></i> ذخیره تغییرات';
             } else {
                 // ذخیره تغییرات
-                user.fullName = nameInput.value;
+                const user = AuthService.getUser();
+                user.name = nameInput.value;
                 user.email = emailInput.value;
                 localStorage.setItem('user', JSON.stringify(user));
                 
@@ -697,9 +690,9 @@
                 this.innerHTML = '<i class="fas fa-edit"></i> ویرایش پروفایل';
                 
                 // به‌روزرسانی اطلاعات در صفحه
-                document.getElementById('welcomeUser').textContent = `خوش آمدید، ${user.fullName}`;
-                document.getElementById('userName').textContent = user.fullName;
-                
+                document.getElementById('welcomeUser').textContent = `خوش آمدید، ${user.name}`;
+                document.getElementById('userName').textContent = user.name;
+
                 alert('تغییرات ذخیره شد');
             }
         });

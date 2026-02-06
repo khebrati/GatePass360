@@ -211,16 +211,20 @@
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="/javascripts/auth.js"></script>
+    <script src="/javascripts/panel.js"></script>
     <script>
-        // بررسی لاگین بودن
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user || user.role !== 'guest') {
-            window.location.href = '/login';
-        }
-        
-        // نمایش نام کاربر
-        document.getElementById('userName').textContent = user.name;
-        
+        // Initialize panel
+        (async function() {
+            const user = await initPanel(['guest'], function(user) {
+                // Display user info
+                displayUserInfo(user);
+                // Load requests
+                loadRequests();
+            });
+        })();
+
         // فرم درخواست جدید
         document.getElementById('newRequestForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -248,20 +252,6 @@
                 </tr>
             `).join('');
         }
-        
-        function getStatusText(status) {
-            const map = { pending: 'در انتظار', approved: 'تأیید شده', rejected: 'رد شده' };
-            return map[status] || status;
-        }
-        
-        // خروج
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            localStorage.removeItem('user');
-            window.location.href = '/login';
-        });
-        
-        // اجرای اولیه
-        loadRequests();
     </script>
 </body>
 </html>

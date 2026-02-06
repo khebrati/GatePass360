@@ -187,15 +187,20 @@
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="/javascripts/auth.js"></script>
+    <script src="/javascripts/panel.js"></script>
     <script>
-        // بررسی نقش
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user || user.role !== 'host') {
-            window.location.href = '/login';
-        }
-
-        // نمایش نام کاربر
-        document.getElementById('userName').textContent = user.name;
+        // Initialize panel
+        (async function() {
+            const user = await initPanel(['host'], function(user) {
+                // Display user info
+                displayUserInfo(user);
+                // Load data
+                loadPendingRequests();
+                loadHistory();
+            });
+        })();
 
         // بارگذاری درخواست‌های در انتظار
         function loadPendingRequests() {
@@ -242,11 +247,6 @@
             `).join('');
         }
 
-        function getStatusText(status) {
-            const map = { pending: 'در انتظار', approved: 'تأیید شده', rejected: 'رد شده' };
-            return map[status] || status;
-        }
-
         // توابع تأیید و رد
         function approveRequest(requestId) {
             alert(`درخواست ${requestId} تأیید شد`);
@@ -259,16 +259,6 @@
             loadPendingRequests();
             loadHistory();
         }
-
-        // خروج
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            localStorage.removeItem('user');
-            window.location.href = '/login';
-        });
-
-        // اجرای اولیه
-        loadPendingRequests();
-        loadHistory();
     </script>
 </body>
 </html>
