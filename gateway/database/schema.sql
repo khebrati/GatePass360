@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS "VisitRequest" (
     guest_id INT REFERENCES "User"(id),
     host_id INT REFERENCES "User"(id),
     purpose TEXT NOT NULL,
+    description TEXT,
     visit_date DATE NOT NULL,
     status VARCHAR(50) CHECK (status IN ('pending_host_review', 'rejected_by_host', 'pending_security', 'rejected_by_security', 'approved')) NOT NULL,
     rejection_reason TEXT,

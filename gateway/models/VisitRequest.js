@@ -6,15 +6,15 @@ const pool = require('../database/db');
 class VisitRequest {
   /**
    * Create a new visit request
-   * @param {Object} data - { guest_id, host_id, purpose, visit_date }
+   * @param {Object} data - { guest_id, host_id, purpose, description, visit_date }
    * @returns {Promise<Object>}
    */
-  static async create({ guest_id, host_id, purpose, visit_date }) {
+  static async create({ guest_id, host_id, purpose, description, visit_date }) {
     const result = await pool.query(
-      `INSERT INTO "VisitRequest" (guest_id, host_id, purpose, visit_date, status)
-       VALUES ($1, $2, $3, $4, 'pending_host_review')
-       RETURNING id, guest_id, host_id, purpose, visit_date, status, created_at`,
-      [guest_id, host_id, purpose, visit_date]
+      `INSERT INTO "VisitRequest" (guest_id, host_id, purpose, description, visit_date, status)
+       VALUES ($1, $2, $3, $4, $5, 'pending_host_review')
+       RETURNING id, guest_id, host_id, purpose, description, visit_date, status, created_at`,
+      [guest_id, host_id, purpose, description || null, visit_date]
     );
     return result.rows[0];
   }
