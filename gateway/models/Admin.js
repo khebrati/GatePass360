@@ -129,11 +129,25 @@ class Admin {
        WHERE checked_out_at IS NULL`
     );
 
+    // Get today's check-ins count
+    const todayCheckInsResult = await pool.query(
+      `SELECT COUNT(*) as count FROM "TrafficLog" 
+       WHERE DATE(checked_in_at) = CURRENT_DATE`
+    );
+
+    // Get last week's check-ins count
+    const weekCheckInsResult = await pool.query(
+      `SELECT COUNT(*) as count FROM "TrafficLog" 
+       WHERE checked_in_at >= CURRENT_DATE - INTERVAL '7 days'`
+    );
+
     return {
       usersByRole: userStatsResult.rows,
       visitsByStatus: visitStatsResult.rows,
       todayVisits: parseInt(todayVisitsResult.rows[0]?.count || 0),
-      presentCount: parseInt(presentCountResult.rows[0]?.count || 0)
+      presentCount: parseInt(presentCountResult.rows[0]?.count || 0),
+      todayCheckIns: parseInt(todayCheckInsResult.rows[0]?.count || 0),
+      weekCheckIns: parseInt(weekCheckInsResult.rows[0]?.count || 0)
     };
   }
 }

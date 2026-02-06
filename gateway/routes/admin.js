@@ -31,5 +31,12 @@ router.get('/users', authenticateToken, authorizeRoles('admin'), adminController
  */
 router.patch('/users/:id/role', authenticateToken, authorizeRoles('admin'), adminController.changeUserRole);
 
+/**
+ * @route   GET /api/admin/stats
+ * @desc    Get system statistics
+ * @access  Private (Admin only)
+ */
+router.get('/stats', authenticateToken, authorizeRoles('admin'), adminController.getStats);
+
 module.exports = router;
 

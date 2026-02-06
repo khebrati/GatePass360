@@ -11,7 +11,8 @@ const AdminPanel = {
     users: '/api/admin/users',
     changeRole: (id) => `/api/admin/users/${id}/role`,
     reportLog: '/api/admin/reports/log',
-    reportPresent: '/api/admin/reports/present'
+    reportPresent: '/api/admin/reports/present',
+    stats: '/api/admin/stats'
   },
 
   /**
@@ -30,6 +31,7 @@ const AdminPanel = {
     await this.loadUsers();
     await this.loadReports();
     await this.loadPresentPeople();
+    await this.loadStats();
   },
 
   /**
@@ -249,6 +251,41 @@ const AdminPanel = {
   },
 
   /**
+   * Load statistics from API
+   */
+  async loadStats() {
+    try {
+      const response = await AuthService.fetch(this.endpoints.stats, {
+        method: 'GET'
+      });
+
+      if (response.success) {
+        this.data.stats = response.data;
+        this.displayStats(response.data);
+      }
+    } catch (error) {
+      console.error('Error loading stats:', error);
+    }
+  },
+
+  /**
+   * Display statistics
+   * @param {Object} stats
+   */
+  displayStats(stats) {
+    const todayCheckInsEl = document.getElementById('todayCheckIns');
+    const weekCheckInsEl = document.getElementById('weekCheckIns');
+
+    if (todayCheckInsEl && stats.todayCheckIns !== undefined) {
+      todayCheckInsEl.textContent = stats.todayCheckIns;
+    }
+
+    if (weekCheckInsEl && stats.weekCheckIns !== undefined) {
+      weekCheckInsEl.textContent = stats.weekCheckIns;
+    }
+  },
+
+  /**
    * Update statistics display
    */
   updateStats() {
@@ -272,6 +309,11 @@ const AdminPanel = {
 
     if (currentVisitorsEl) {
       currentVisitorsEl.textContent = this.data.presentPeople.length;
+    }
+
+    // Also update stats from API if available
+    if (this.data.stats) {
+      this.displayStats(this.data.stats);
     }
   },
 
