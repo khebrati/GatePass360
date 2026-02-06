@@ -122,6 +122,47 @@
             background: #3498db;
             color: white;
         }
+
+        .action-btn.approve-btn {
+            background: #27ae60;
+        }
+
+        .action-btn.approve-btn:hover {
+            background: #219a52;
+        }
+
+        .action-btn.reject-btn {
+            background: #e74c3c;
+        }
+
+        .action-btn.reject-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Status colors for different states */
+        .status-pending-host { background: #fff3cd; color: #856404; }
+        .status-pending-security { background: #cce5ff; color: #004085; }
+        .status-approved { background: #d4edda; color: #155724; }
+        .status-rejected-host { background: #f8d7da; color: #721c24; }
+        .status-rejected-security { background: #f5c6cb; color: #721c24; }
+
+        /* Rejection reason styling */
+        .rejection-reason {
+            color: #721c24;
+            font-size: 0.9rem;
+        }
+        .rejection-reason i {
+            margin-left: 5px;
+        }
+
+        .pass-code {
+            font-family: monospace;
+            font-size: 1.1rem;
+            background: #e8f5e9;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #2e7d32;
+        }
     </style>
 </head>
 <body>
@@ -159,14 +200,14 @@
 
         <!-- کارت درخواست‌های تأیید شده -->
         <div class="card">
-            <h2 class="card-title">درخواست‌های تأیید شده (برای صدور مجوز)</h2>
+            <h2 class="card-title">درخواست‌های در انتظار تأیید حراست</h2>
             <table class="requests-table">
                 <thead>
                     <tr>
                         <th>مهمان</th>
                         <th>میزبان</th>
                         <th>تاریخ</th>
-                        <th>کد مجوز</th>
+                        <th>هدف</th>
                         <th>عملیات</th>
                     </tr>
                 </thead>
@@ -202,57 +243,15 @@
     <!-- Scripts -->
     <script src="/javascripts/auth.js"></script>
     <script src="/javascripts/panel.js"></script>
+    <script src="/javascripts/panel-security.js"></script>
     <script>
         // Initialize panel
         (async function() {
             const user = await initPanel(['security'], function(user) {
                 // Display user info
                 displayUserInfo(user);
-                // Load data
-                loadApprovedRequests();
             });
         })();
-
-        // بارگذاری درخواست‌های تأیید شده
-        function loadApprovedRequests() {
-            const requests = [
-                { id: 1, guest: 'علی محمدی', host: 'احمد رضایی', date: '۱۴۰۲/۱۲/۱۵', passCode: 'GP-001' },
-                { id: 2, guest: 'سارا کریمی', host: 'محمد حسینی', date: '۱۴۰۲/۱۲/۱۶', passCode: 'GP-002' }
-            ];
-
-            const tbody = document.getElementById('approvedRequests');
-            tbody.innerHTML = requests.map(req => `
-                <tr>
-                    <td>${req.guest}</td>
-                    <td>${req.host}</td>
-                    <td>${req.date}</td>
-                    <td><strong>${req.passCode}</strong></td>
-                    <td>
-                        <button class="action-btn" onclick="issuePass(${req.id})">
-                            <i class="fas fa-id-card"></i> صدور مجوز
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function issuePass(requestId) {
-            alert(`مجوز برای درخواست ${requestId} صادر شد`);
-        }
-
-        // فرم ثبت ورود
-        document.getElementById('checkinForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('ورود مهمان ثبت شد');
-            this.reset();
-        });
-
-        // فرم ثبت خروج
-        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('خروج مهمان ثبت شد');
-            this.reset();
-        });
     </script>
 </body>
 </html>
