@@ -37,7 +37,6 @@ const passController = {
       const { id } = req.params;
       const security_id = req.user.id;
 
-      // Check if visit request exists and get details
       const visitRequest = await VisitRequest.findByIdWithDetails(id);
       if (!visitRequest) {
         return res.status(404).json({
@@ -53,7 +52,6 @@ const passController = {
         });
       }
 
-      // Create pass
       const { pass, validityHours } = await Pass.create(id, security_id);
 
       res.status(200).json({
@@ -102,7 +100,6 @@ const passController = {
       const { id } = req.params;
       const { reason } = req.body;
 
-      // Validate required fields
       if (!reason || reason.trim() === '') {
         return res.status(400).json({
           success: false,
@@ -110,7 +107,6 @@ const passController = {
         });
       }
 
-      // Check if visit request exists and get details
       const visitRequest = await VisitRequest.findByIdWithDetails(id);
       if (!visitRequest) {
         return res.status(404).json({
@@ -126,7 +122,6 @@ const passController = {
         });
       }
 
-      // Update status to rejected_by_security with reason
       const updatedVisit = await VisitRequest.reject(id, 'rejected_by_security', reason.trim());
 
       res.status(200).json({
@@ -168,7 +163,6 @@ const passController = {
       const { code } = req.body;
       const security_id = req.user.id;
 
-      // Validate required fields
       if (!code || code.trim() === '') {
         return res.status(400).json({
           success: false,
@@ -176,7 +170,6 @@ const passController = {
         });
       }
 
-      // Find the pass
       const pass = await Pass.findByCode(code);
       if (!pass) {
         return res.status(404).json({
@@ -187,7 +180,6 @@ const passController = {
 
       const now = new Date();
 
-      // Check if pass is already used
       if (pass.is_used) {
         return res.status(400).json({
           success: false,
@@ -195,7 +187,6 @@ const passController = {
         });
       }
 
-      // Check if pass is expired
       if (now > new Date(pass.valid_until)) {
         return res.status(400).json({
           success: false,
@@ -203,7 +194,6 @@ const passController = {
         });
       }
 
-      // Check if pass is valid yet
       if (now < new Date(pass.valid_from)) {
         return res.status(400).json({
           success: false,
@@ -211,7 +201,6 @@ const passController = {
         });
       }
 
-      // Create check-in record
       const trafficLog = await TrafficLog.checkIn(pass.id, security_id);
 
       res.status(200).json({
@@ -253,7 +242,6 @@ const passController = {
     try {
       const { code } = req.body;
 
-      // Validate required fields
       if (!code || code.trim() === '') {
         return res.status(400).json({
           success: false,
@@ -261,7 +249,6 @@ const passController = {
         });
       }
 
-      // Find the pass with traffic log
       const pass = await Pass.findByCodeWithTraffic(code);
       if (!pass) {
         return res.status(404).json({
@@ -270,7 +257,6 @@ const passController = {
         });
       }
 
-      // Check if pass has been checked in
       if (!pass.traffic_log_id) {
         return res.status(400).json({
           success: false,
@@ -278,7 +264,6 @@ const passController = {
         });
       }
 
-      // Check if already checked out
       if (pass.checked_out_at) {
         return res.status(400).json({
           success: false,
@@ -286,7 +271,6 @@ const passController = {
         });
       }
 
-      // Update check-out time
       const trafficLog = await TrafficLog.checkOut(pass.traffic_log_id);
 
       res.status(200).json({
@@ -328,7 +312,6 @@ const passController = {
     try {
       const { code } = req.params;
 
-      // Find the pass with full details
       const pass = await Pass.findByCodeWithFullDetails(code);
       if (!pass) {
         return res.status(404).json({
@@ -339,7 +322,6 @@ const passController = {
 
       const now = new Date();
 
-      // Determine pass status
       let passStatus = 'valid';
       if (pass.checked_out_at) {
         passStatus = 'completed';

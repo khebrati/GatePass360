@@ -17,13 +17,11 @@ class TrafficLog {
 
       const now = new Date();
 
-      // Mark pass as used
       await client.query(
         `UPDATE "Pass" SET is_used = TRUE WHERE id = $1`,
         [passId]
       );
 
-      // Create traffic log entry
       const result = await client.query(
         `INSERT INTO "TrafficLog" (pass_id, checked_in_at, recorded_by)
          VALUES ($1, $2, $3)

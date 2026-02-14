@@ -10,10 +10,8 @@ const adminController = {
    */
   getFullReport: async (req, res) => {
     try {
-      // Get all users
       const users = await User.findAll();
 
-      // Get all visit requests with associated passes
       const visits = await Admin.getAllVisitsWithPasses();
 
       res.status(200).json({
@@ -73,7 +71,6 @@ const adminController = {
       const { id } = req.params;
       const { role } = req.body;
 
-      // Validate role
       const validRoles = ['guest', 'host', 'security', 'admin'];
       if (!role || !validRoles.includes(role)) {
         return res.status(400).json({
@@ -82,7 +79,6 @@ const adminController = {
         });
       }
 
-      // Check if user exists
       const user = await User.findById(id);
       if (!user) {
         return res.status(404).json({
@@ -91,7 +87,6 @@ const adminController = {
         });
       }
 
-      // Update user role
       const updatedUser = await Admin.updateUserRole(id, role);
 
       res.status(200).json({

@@ -1,4 +1,3 @@
-// Export all controllers
 const authController = require('./authController');
 const visitController = require('./visitController');
 const passController = require('./passController');

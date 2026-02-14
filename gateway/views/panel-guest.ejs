@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- نوار بالا -->
     <nav class="navbar">
         <div class="container">
             <div class="logo">
@@ -24,9 +23,7 @@
         </div>
     </nav>
 
-    <!-- پنل مهمان -->
     <div class="panel-container">
-        <!-- هدر پنل -->
         <div class="panel-header">
             <div class="user-info">
                 <div class="user-icon">
@@ -42,7 +39,6 @@
             </button>
         </div>
         
-        <!-- کارت ثبت درخواست جدید -->
         <div class="card">
             <h2 class="card-title">ثبت درخواست ورود جدید</h2>
             <form class="request-form" id="newRequestForm">
@@ -79,7 +75,6 @@
             </form>
         </div>
         
-        <!-- کارت درخواست‌های من -->
         <div class="card">
             <h2 class="card-title">درخواست‌های من</h2>
             <table class="requests-table">
@@ -93,25 +88,20 @@
                     </tr>
                 </thead>
                 <tbody id="myRequests">
-                    <!-- با JS پر می‌شود -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="/javascripts/auth.js"></script>
     <script src="/javascripts/panel.js"></script>
     <script>
-        // Initialize panel
         (async function() {
             const user = await initPanel(['guest'], function(user) {
-                // Display user info
                 displayUserInfo(user);
             });
         })();
     </script>
-    <!-- Guest Panel specific script - calls API after page load -->
     <script src="/javascripts/panel-guest.js"></script>
 </body>
 </html>

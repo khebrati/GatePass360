@@ -13,7 +13,6 @@ const visitController = {
       const { host_email, purpose, description, visit_date } = req.body;
       const guest_id = req.user.id;
 
-      // Validate required fields
       if (!host_email || !purpose || !visit_date) {
         return res.status(400).json({
           success: false,
@@ -21,7 +20,6 @@ const visitController = {
         });
       }
 
-      // Validate visit_date format and ensure it's not in the past
       const visitDateObj = new Date(visit_date);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -40,7 +38,6 @@ const visitController = {
         });
       }
 
-      // Find host by email and verify they have 'host' role
       const host = await User.findHostByEmail(host_email);
       if (!host) {
         return res.status(404).json({
@@ -49,7 +46,6 @@ const visitController = {
         });
       }
 
-      // Create visit request
       const visitRequest = await VisitRequest.create({
         guest_id,
         host_id: host.id,
@@ -147,7 +143,6 @@ const visitController = {
       const { id } = req.params;
       const host_id = req.user.id;
 
-      // Check if visit request exists
       const visit = await VisitRequest.findById(id);
       if (!visit) {
         return res.status(404).json({
@@ -156,7 +151,6 @@ const visitController = {
         });
       }
 
-      // Verify this host owns the request
       if (visit.host_id !== host_id) {
         return res.status(403).json({
           success: false,
@@ -164,7 +158,6 @@ const visitController = {
         });
       }
 
-      // Check if request is in the correct status
       if (visit.status !== 'pending_host_review') {
         return res.status(400).json({
           success: false,
@@ -172,7 +165,6 @@ const visitController = {
         });
       }
 
-      // Update status to pending_security
       const updatedVisit = await VisitRequest.updateStatus(id, 'pending_security');
 
       res.status(200).json({
@@ -201,7 +193,6 @@ const visitController = {
       const { rejection_reason } = req.body;
       const host_id = req.user.id;
 
-      // Validate rejection reason
       if (!rejection_reason || rejection_reason.trim() === '') {
         return res.status(400).json({
           success: false,
@@ -209,7 +200,6 @@ const visitController = {
         });
       }
 
-      // Check if visit request exists
       const visit = await VisitRequest.findById(id);
       if (!visit) {
         return res.status(404).json({
@@ -218,7 +208,6 @@ const visitController = {
         });
       }
 
-      // Verify this host owns the request
       if (visit.host_id !== host_id) {
         return res.status(403).json({
           success: false,
@@ -226,7 +215,6 @@ const visitController = {
         });
       }
 
-      // Check if request is in the correct status
       if (visit.status !== 'pending_host_review') {
         return res.status(400).json({
           success: false,
@@ -234,7 +222,6 @@ const visitController = {
         });
       }
 
-      // Update status to rejected_by_host with reason
       const updatedVisit = await VisitRequest.reject(id, 'rejected_by_host', rejection_reason.trim());
 
       res.status(200).json({

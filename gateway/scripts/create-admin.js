@@ -1,16 +1,3 @@
-#!/usr/bin/env node
-/**
- * Admin Registration Script
- *
- * This is a standalone script to create admin users.
- * It uses the existing User model from the project.
- *
- * Usage:
- *   node scripts/create-admin.js <name> <email> <password>
- *
- * Example:
- *   node scripts/create-admin.js "مدیر سیستم" admin@example.com securePassword123
- */
 
 require('dotenv').config();
 const User = require('../models/User');
@@ -47,7 +34,6 @@ async function createAdmin(name, email, password) {
   try {
     log('\n🔧 Creating admin user...', 'blue');
 
-    // Validate inputs
     if (!name || name.length < 2) {
       throw new Error('Name must be at least 2 characters long');
     }
@@ -60,13 +46,11 @@ async function createAdmin(name, email, password) {
       throw new Error('Password must be at least 6 characters long');
     }
 
-    // Check if user already exists
     const existingUser = await User.existsByEmail(email);
     if (existingUser) {
       throw new Error(`User with email "${email}" already exists`);
     }
 
-    // Create the admin user
     const user = await User.create({
       name,
       email,
@@ -94,13 +78,11 @@ async function createAdmin(name, email, password) {
 async function main() {
   const args = process.argv.slice(2);
 
-  // Check for help flag
   if (args.includes('--help') || args.includes('-h')) {
     printUsage();
     process.exit(0);
   }
 
-  // Validate arguments
   if (args.length < 3) {
     log('\n❌ Error: Missing required arguments', 'red');
     printUsage();
@@ -115,11 +97,9 @@ async function main() {
   } catch (error) {
     process.exit(1);
   } finally {
-    // Close database connection
     await pool.end();
   }
 }
 
-// Run the script
 main();
 

@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- نوار بالا -->
     <nav class="navbar">
         <div class="container">
             <div class="logo">
@@ -25,7 +24,6 @@
         </div>
     </nav>
 
-    <!-- صفحه ورود -->
     <div class="auth-page">
         <div class="auth-card">
             <!-- هدر -->
@@ -35,30 +33,24 @@
                 <p>با حساب کاربری خود وارد شوید</p>
             </div>
             
-            <!-- پیام خطا -->
             <div class="error-message" id="errorMessage"></div>
             
-            <!-- فرم -->
             <form id="loginForm">
-                <!-- ایمیل -->
                 <div class="form-group">
                     <label for="email">ایمیل</label>
                     <input type="email" id="email" class="form-control" placeholder="example@domain.com" required>
                 </div>
                 
-                <!-- رمز عبور -->
                 <div class="form-group">
                     <label for="password">رمز عبور</label>
                     <input type="password" id="password" class="form-control" placeholder="رمز عبور خود را وارد کنید" required>
                     <a href="#" class="forgot-password">رمز عبور را فراموش کرده‌اید؟</a>
                 </div>
                 
-                <!-- دکمه ورود -->
                 <button type="submit" class="btn-primary" style="width: 100%; padding: 12px;">
                     <i class="fas fa-sign-in-alt"></i> ورود
                 </button>
                 
-                <!-- فوتر فرم -->
                 <div class="form-footer">
                     <p>حساب کاربری ندارید؟ <a href="/register">ثبت‌نام کنید</a></p>
                     <a href="/" style="color: #666; text-decoration: none;">
@@ -69,7 +61,6 @@
         </div>
     </div>
 
-    <!-- Authentication Scripts -->
     <script src="/javascripts/auth.js"></script>
     <script src="/javascripts/login.js"></script>
 </body>

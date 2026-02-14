@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- نوار بالا -->
     <nav class="navbar">
         <div class="container">
             <div class="logo">
@@ -24,7 +23,6 @@
         </div>
     </nav>
 
-    <!-- پنل حراست -->
     <div class="panel-container">
         <div class="panel-header">
             <div class="user-info">
@@ -41,7 +39,6 @@
             </button>
         </div>
 
-        <!-- کارت درخواست‌های تأیید شده -->
         <div class="card">
             <h2 class="card-title">درخواست‌های در انتظار تأیید حراست</h2>
             <table class="requests-table">
@@ -55,12 +52,10 @@
                     </tr>
                 </thead>
                 <tbody id="approvedRequests">
-                    <!-- پر می‌شود -->
                 </tbody>
             </table>
         </div>
 
-        <!-- کارت ثبت ورود/خروج -->
         <div class="card">
             <h2 class="card-title">ثبت ورود و خروج</h2>
             <div class="checkin-section">
@@ -83,15 +78,12 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="/javascripts/auth.js"></script>
     <script src="/javascripts/panel.js"></script>
     <script src="/javascripts/panel-security.js"></script>
     <script>
-        // Initialize panel
         (async function() {
             const user = await initPanel(['security'], function(user) {
-                // Display user info
                 displayUserInfo(user);
             });
         })();

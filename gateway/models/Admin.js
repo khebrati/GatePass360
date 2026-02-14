@@ -1,8 +1,5 @@
 const pool = require('../database/db');
 
-/**
- * Admin Model - handles admin-related database operations
- */
 class Admin {
   /**
    * Get all visit requests with associated passes
@@ -107,35 +104,29 @@ class Admin {
    * @returns {Promise<Object>}
    */
   static async getStats() {
-    // Get user count by role
     const userStatsResult = await pool.query(
       `SELECT role, COUNT(*) as count FROM "User" GROUP BY role`
     );
 
-    // Get visit request count by status
     const visitStatsResult = await pool.query(
       `SELECT status, COUNT(*) as count FROM "VisitRequest" GROUP BY status`
     );
 
-    // Get today's visits count
     const todayVisitsResult = await pool.query(
       `SELECT COUNT(*) as count FROM "VisitRequest" 
        WHERE DATE(created_at) = CURRENT_DATE`
     );
 
-    // Get currently present people count
     const presentCountResult = await pool.query(
       `SELECT COUNT(*) as count FROM "TrafficLog" 
        WHERE checked_out_at IS NULL`
     );
 
-    // Get today's check-ins count
     const todayCheckInsResult = await pool.query(
       `SELECT COUNT(*) as count FROM "TrafficLog" 
        WHERE DATE(checked_in_at) = CURRENT_DATE`
     );
 
-    // Get last week's check-ins count
     const weekCheckInsResult = await pool.query(
       `SELECT COUNT(*) as count FROM "TrafficLog" 
        WHERE checked_in_at >= CURRENT_DATE - INTERVAL '7 days'`

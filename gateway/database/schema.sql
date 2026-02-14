@@ -1,4 +1,3 @@
--- Create User table
 CREATE TABLE IF NOT EXISTS "User" (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -10,7 +9,6 @@ CREATE TABLE IF NOT EXISTS "User" (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create VisitRequest table
 CREATE TABLE IF NOT EXISTS "VisitRequest" (
     id SERIAL PRIMARY KEY,
     guest_id INT REFERENCES "User"(id),
@@ -24,7 +22,6 @@ CREATE TABLE IF NOT EXISTS "VisitRequest" (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create Pass table
 CREATE TABLE IF NOT EXISTS "Pass" (
     id SERIAL PRIMARY KEY,
     visit_request_id INT REFERENCES "VisitRequest"(id),
@@ -36,7 +33,6 @@ CREATE TABLE IF NOT EXISTS "Pass" (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create TrafficLog table
 CREATE TABLE IF NOT EXISTS "TrafficLog" (
     id SERIAL PRIMARY KEY,
     pass_id INT REFERENCES "Pass"(id),
@@ -45,7 +41,6 @@ CREATE TABLE IF NOT EXISTS "TrafficLog" (
     recorded_by INT REFERENCES "User"(id)
 );
 
--- Create TokenBlacklist table for logout functionality
 CREATE TABLE IF NOT EXISTS "TokenBlacklist" (
     id SERIAL PRIMARY KEY,
     token TEXT NOT NULL,
@@ -53,6 +48,5 @@ CREATE TABLE IF NOT EXISTS "TokenBlacklist" (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create index on token for faster lookups
 CREATE INDEX IF NOT EXISTS idx_token_blacklist_token ON "TokenBlacklist"(token);
 

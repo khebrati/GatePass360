@@ -1,7 +1,6 @@
 const pool = require('../database/db');
 const crypto = require('crypto');
 
-// Fixed pass validity duration in hours (configured at backend)
 const PASS_VALIDITY_HOURS = 8;
 
 /**
@@ -45,20 +44,16 @@ class Pass {
     try {
       await client.query('BEGIN');
 
-      // Update visit request status
       await client.query(
         `UPDATE "VisitRequest" SET status = 'approved', updated_at = CURRENT_TIMESTAMP WHERE id = $1`,
         [visitRequestId]
       );
 
-      // Generate unique pass code
       const passCode = await this.generateUniqueCode();
 
-      // Calculate validity period
       const validFrom = new Date();
       const validUntil = new Date(validFrom.getTime() + PASS_VALIDITY_HOURS * 60 * 60 * 1000);
 
-      // Create pass
       const passResult = await client.query(
         `INSERT INTO "Pass" (visit_request_id, code, issued_by, valid_from, valid_until)
          VALUES ($1, $2, $3, $4, $5)

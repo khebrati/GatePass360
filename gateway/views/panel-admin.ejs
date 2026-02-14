@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- نوار بالا -->
     <nav class="navbar">
         <div class="container">
             <div class="logo">
@@ -24,7 +23,6 @@
         </div>
     </nav>
 
-    <!-- پنل مدیر -->
     <div class="panel-container">
         <div class="panel-header">
             <div class="user-info">
@@ -46,7 +44,6 @@
             </div>
         </div>
 
-        <!-- کارت آمار -->
         <div class="card">
             <h2 class="card-title">آمار سیستم</h2>
             <div class="stats-grid">
@@ -73,7 +70,6 @@
             </div>
         </div>
 
-        <!-- کارت افراد حاضر در مجموعه -->
         <div class="card">
             <h2 class="card-title">
                 افراد حاضر در مجموعه
@@ -94,7 +90,6 @@
             </table>
         </div>
 
-        <!-- کارت مدیریت کاربران -->
         <div class="card">
             <h2 class="card-title">مدیریت کاربران</h2>
             <table class="requests-table">
@@ -108,12 +103,10 @@
                     </tr>
                 </thead>
                 <tbody id="usersList">
-                    <!-- پر می‌شود -->
                 </tbody>
             </table>
         </div>
 
-        <!-- کارت تمام درخواست‌ها -->
         <div class="card">
             <h2 class="card-title">تمام درخواست‌های ورود</h2>
             <table class="requests-table">
@@ -129,21 +122,17 @@
                     </tr>
                 </thead>
                 <tbody id="allVisitsList">
-                    <!-- پر می‌شود -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="/javascripts/auth.js"></script>
     <script src="/javascripts/panel.js"></script>
     <script src="/javascripts/panel-admin.js"></script>
     <script>
-        // Initialize panel
         (async function() {
             const user = await initPanel(['admin'], function(user) {
-                // Display user info
                 displayUserInfo(user);
             });
         })();

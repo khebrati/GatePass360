@@ -16,7 +16,6 @@ const authenticateToken = async (req, res, next) => {
       });
     }
 
-    // Check if token is blacklisted (logged out)
     const blacklisted = await pool.query(
       'SELECT id FROM "TokenBlacklist" WHERE token = $1',
       [token]
@@ -37,7 +36,6 @@ const authenticateToken = async (req, res, next) => {
         });
       }
 
-      // Fetch fresh user data from database
       const result = await pool.query(
         'SELECT id, name, email, phone, role, created_at FROM "User" WHERE id = $1',
         [decoded.userId]
@@ -63,7 +61,6 @@ const authenticateToken = async (req, res, next) => {
   }
 };
 
-// Middleware to check user role
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!req.user) {
@@ -84,7 +81,6 @@ const authorizeRoles = (...roles) => {
   };
 };
 
-// Generate JWT token
 const generateToken = (userId, role) => {
   return jwt.sign(
     { userId, role },

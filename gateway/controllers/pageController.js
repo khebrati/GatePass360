@@ -3,7 +3,6 @@
  */
 const pageController = {
   /**
-   * Render home page
    * GET /
    */
   renderIndex: (req, res) => {
@@ -11,7 +10,6 @@ const pageController = {
   },
 
   /**
-   * Render login page
    * GET /login
    */
   renderLogin: (req, res) => {
@@ -19,7 +17,6 @@ const pageController = {
   },
 
   /**
-   * Render register page
    * GET /register
    */
   renderRegister: (req, res) => {
@@ -27,7 +24,6 @@ const pageController = {
   },
 
   /**
-   * Render general panel page
    * GET /panel
    */
   renderPanel: (req, res) => {
@@ -35,7 +31,6 @@ const pageController = {
   },
 
   /**
-   * Render guest panel page
    * GET /panel/guest
    */
   renderGuestPanel: (req, res) => {
@@ -43,7 +38,6 @@ const pageController = {
   },
 
   /**
-   * Render host panel page
    * GET /panel/host
    */
   renderHostPanel: (req, res) => {
@@ -51,7 +45,6 @@ const pageController = {
   },
 
   /**
-   * Render security panel page
    * GET /panel/security
    */
   renderSecurityPanel: (req, res) => {
@@ -59,7 +52,6 @@ const pageController = {
   },
 
   /**
-   * Render admin panel page
    * GET /panel/admin
    */
   renderAdminPanel: (req, res) => {

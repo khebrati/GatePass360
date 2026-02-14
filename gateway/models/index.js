@@ -1,4 +1,3 @@
-// Export all models
 const User = require('./User');
 const VisitRequest = require('./VisitRequest');
 const Pass = require('./Pass');
